@@ -1,0 +1,13 @@
+class Parameters:
+    
+    def __init__(self):
+        self.parameters = {}
+        value = self.parameters
+        
+    def add(self, parameter_name: str, parameter_value):
+        self.parameters[parameter_name] = parameter_value
+        parameters_copy = self.parameters.copy()
+        return parameters_copy
+    
+    def get(self, parameter_name: str):
+        return self.parameters[parameter_name]
