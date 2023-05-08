@@ -6,13 +6,13 @@ class AbstractSequence:
         self.run()
     
     def setup(self):
-        print('\t- setup -')
+        pass
     
     def main(self):
-        print('\t- main -')
+        pass
     
     def cleanup(self):
-        print('\t- cleanup -')
+        pass
     
     def run(self):
         self.setup()
