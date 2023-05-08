@@ -1,5 +1,9 @@
 from .datatypes.parameters import Parameters
-from .sequences import DummySequence
+
+from .sequences import CreateInstrumentsSequence
+from .sequences import ConfigureInstrumentsSequence
+from .sequences import ResistanceTestSequence
+from .sequences import ReportResultsSequence
 
 
 class AbstractProcessModel:
@@ -28,19 +32,23 @@ class AbstractProcessModel:
     def post_uut_loop(self):
         print('5. Closing instruments')
 
-class DummyProcessModel(AbstractProcessModel):
+class ITWProcessModel(AbstractProcessModel):
     
     def __init__(self):
         pass
         
     def pre_uut_loop(self):
-        print('1. Creating DUMMY instruments')
-        #TODO read configuration files
+        print('\n1. Create DMM and connection to database')
+        #TODO read station settings
+        #TODO read instrument settings
+        #TODO read test settings
         self.parameters = Parameters()
-        #TODO use defined sequence from configuration files
-        self.Sequence = DummySequence()
+        Sequence1 = CreateInstrumentsSequence()
+        Sequence2 = ConfigureInstrumentsSequence()
         
     def pre_uut(self, serial):
+        #TODO wait for trigger to create serial
+        #TODO serialize (create new serial)
         self.serial = serial
         #TODO serial validations
         
@@ -51,14 +59,14 @@ class DummyProcessModel(AbstractProcessModel):
         return continue_testing
     
     def main(self):
-        print(f'3. Testing DUMMY {self.serial}')
+        print(f'\n3. Testing Resistance, unit: {self.serial}')
         #TODO main tests
-        self.Sequence.run()
+        Sequence1 = ResistanceTestSequence()
     
     def post_uut(self):
-        print(f'4. Report DUMMY results for {self.serial}')
+        print(f'\n4. Report Results, unit: {self.serial}')
         #TODO report generator
+        Sequence1 = ReportResultsSequence()
     
     def post_uut_loop(self):
-        print('5. Closing DUMMY instruments')
-        #TODO report generator
+        print('\n5. Closing references and instruments')

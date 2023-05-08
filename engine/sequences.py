@@ -1,32 +1,65 @@
 class AbstractSequence:
     
     def __init__(self):
-        pass
+        self.name = type(self).__name__
+        print(f'[{self.name}]')
+        self.run()
     
     def setup(self):
-        pass
+        print('\t- setup -')
     
     def main(self):
-        pass
+        print('\t- main -')
     
     def cleanup(self):
-        pass
+        print('\t- cleanup -')
     
     def run(self):
         self.setup()
         self.main()
         self.cleanup()
 
-class DummySequence(AbstractSequence):
+# [PreUUTLoop Sequences]
 
-    def __init__(self):
-        pass
+class CreateInstrumentsSequence(AbstractSequence):
     
     def setup(self):
-        print('\t1. Setup')
+        print('\t\t- read instrument settings')
+        return super().setup()
     
     def main(self):
-        print('\t2. Main')
+        print('\t\t- create instruments')
+        return super().main()
     
     def cleanup(self):
-        print(f'\t3. Cleanup')
+        return super().cleanup()
+
+class ConfigureInstrumentsSequence(AbstractSequence):
+    
+    def main(self):
+        print('\t\t- configure instruments')
+        return super().main()
+
+# [PreUUT Sequences]
+
+
+
+# [Main Sequences]
+
+class ResistanceTestSequence(AbstractSequence):
+    
+    def main(self):
+        print('\t\t- Executing resistance test')
+        return super().main()
+
+
+# [Post Sequences]
+
+class ReportResultsSequence(AbstractSequence):
+    
+    def main(self):
+        print('\t\t- Reporting results to database')
+        return super().main()
+
+
+# [PostUUTLoop Sequences]

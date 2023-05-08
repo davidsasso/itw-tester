@@ -1,5 +1,4 @@
 from .process_model import AbstractProcessModel
-from .process_model import DummyProcessModel
 
 class Engine:
     

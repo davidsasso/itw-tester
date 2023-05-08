@@ -12,7 +12,7 @@ import sys
 from ui.gui import Ui_MainWindow
 from engine.datatypes.local_settings import StationSettings
 from engine.engine import Engine
-from engine.process_model import DummyProcessModel
+from engine.process_model import ITWProcessModel
 
 class Application(QtWidgets.QMainWindow):
     """ Main Application parser for Custom Application """
@@ -38,6 +38,7 @@ class CustomApplication():
         if app == None:
             self.app = Application()
         self.app = app
+        self.Model = None
         self.connect_signals()
         self.app.show()
 
@@ -50,12 +51,12 @@ class CustomApplication():
     def start(self):
         print('Started')
         #TODO pass model from settings
-        Model = DummyProcessModel()
-        self.engine = Engine(sequence_process_model=Model)
+        self.Model = ITWProcessModel()
+        self.engine = Engine(sequence_process_model=self.Model)
         self.show_user_message('Instruments Setup')
         self.engine.pre_uut_loop()
         self.show_user_message('Instruments Ready')
-        self.show_user_message('Scan Serial')
+        self.show_user_message('Waiting for unit')
     
     def test(self):
         print('Test\n')
@@ -75,10 +76,13 @@ class CustomApplication():
     def stop(self):
         self.show_user_message('Stopped')
         print('Stopped')
-        self.engine.post_uut_loop()
+        try:
+            self.engine.post_uut_loop()
+        except AttributeError:
+            pass
+        self.close_application()
         
     def close_application(self):
-        self.stop()
         self.app.close()
 
 # Functions
@@ -87,6 +91,8 @@ class CustomApplication():
         self.app.ui.UserMessageLabel.setText(message)
 
 if __name__ == '__main__':
+    #TODO read station settings
+    #TODO create error log
     app_widgets = QtWidgets.QApplication(sys.argv)
     app_widgets.setStyle('Fusion')
     app_root = Application()
