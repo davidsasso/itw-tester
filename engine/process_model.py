@@ -35,14 +35,13 @@ class AbstractProcessModel:
 class ITWProcessModel(AbstractProcessModel):
     
     def __init__(self):
-        pass
+        self.parameters = Parameters()
         
     def pre_uut_loop(self):
         print('\n1. Create DMM and connection to database')
         #TODO read station settings
         #TODO read instrument settings
         #TODO read test settings
-        self.parameters = Parameters()
         Sequence1 = CreateInstrumentsSequence()
         Sequence2 = ConfigureInstrumentsSequence()
         
