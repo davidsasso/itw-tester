@@ -52,6 +52,7 @@ class ITWProcessModel(AbstractProcessModel):
     def pre_uut_loop(self):
         print('\n1. Create DMM and connection to database')
         #TODO read station settings
+        print(self.station_settings_path)
         self.station_settings = StationSettings(filepath=self.station_settings_path)
         #TODO read instrument settings
         #self.instrument_settings = ConfigManager(config_file_path=self.instrument_settings_path)

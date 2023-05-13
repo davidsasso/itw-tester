@@ -1,4 +1,5 @@
 import configparser
+import os
 
 class ConfigManager:
     def __init__(self, config_file_path):
@@ -13,33 +14,27 @@ class ConfigManager:
             for key in section:
                 setattr(self, key, section[key])
 
+# station_settings.ini configuration file data structures
 
 class StationData:
     def __init__(self):
         self.station_name = str()
         self.cell_id = str()
-        
-class StationSettings:
-    ''' Datastructure for StationSettings.ini'''
+
+class SettingsFile:
     
     def __init__(self, filepath):
         self.filepath = filepath
-        self.StationData = StationData()
-        
-        self.read_all()
     
     def get_value(self,section,key):
-        """
-        RETURN VALUES FROM SECTION KEY
-        """
-        Path = self.filepath
+        filepath = self.filepath
         Sections = [section]
         Keys = [key]
         parser = configparser.ConfigParser()
         try:
-            parser.read(Path)
+            parser.read(filepath)
         except:
-            print('Path not found')
+            raise Exception('Invalid settings file.')
         assert type(Sections) == type(Keys) == type([]), 'DataType must be list'
     
         values = []
@@ -63,9 +58,19 @@ class StationSettings:
                 values.append(value)
         except configparser.NoSectionError as  e:
             print(e)
-            print('Data or Path not found')
+            print('Missing section error.')
             value = values[-1].replace('"',"")
-        return value #values
+        return value
+        
+class StationSettings(SettingsFile):
+    ''' Datastructure for StationSettings.ini'''
+    
+    def __init__(self, filepath):
+        self.filepath = filepath
+        self.StationData = StationData()
+        
+        self.read_all()
+
     
     def read_all(self):
         ''' Read all sections. '''
@@ -79,8 +84,38 @@ class StationSettings:
         self.StationData.wait_inspection_time = self.get_value(section, key='cell_id')
 
 
-class InstrumentSettings:
-    pass
+# instrument_settings.ini configuration file data structures
+
+class DMM:
+    def __init__(self):
+        self.enabled = bool()
+        self.instrument_type = str()
+        self.address = str()
+
+class InstrumentSettings(SettingsFile):
+    ''' Datastructure for StationSettings.ini'''
+    
+    def __init__(self, filepath):
+        self.filepath = filepath
+        self.DMM = DMM()
+        
+        self.read_all()
+    
+    def read_all(self):
+        ''' Read all sections. '''
+        self.read_station_data()
+
+    def read_dmm(self):
+        ''' Method to read DMM instrumen section. '''
+        
+        section = 'DMM'
+        self.DMM.enabled = self.get_value(section, key='enabled')
+        self.DMM.instrument_type = self.get_value(section, key='instrument_type')
+        self.DMM.address = self.get_value(section, key='address')
 
 class TestSettings:
     pass
+
+
+
+# test_settings.ini configuration file data structures
