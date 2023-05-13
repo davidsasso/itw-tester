@@ -19,6 +19,8 @@ class AbstractSequence:
         self.main()
         self.cleanup()
 
+from .utilities.utilities import ConfigManager
+
 # [PreUUTLoop Sequences]
 
 class CreateInstrumentsSequence(AbstractSequence):

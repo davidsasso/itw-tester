@@ -1,9 +1,15 @@
+# Native Imports
+import os
+
+# Custom Imports
 from .datatypes.parameters import Parameters
 
 from .sequences import CreateInstrumentsSequence
 from .sequences import ConfigureInstrumentsSequence
 from .sequences import ResistanceTestSequence
 from .sequences import ReportResultsSequence
+
+from .utilities.utilities import StationSettings
 
 
 class AbstractProcessModel:
@@ -35,13 +41,22 @@ class AbstractProcessModel:
 class ITWProcessModel(AbstractProcessModel):
     
     def __init__(self):
+        # Define settings paths
+        self.current_dir = os.path.dirname(os.path.abspath(__file__))
+        self.station_settings_path = os.path.join(self.current_dir, 'settings\\station_settings.ini')
+        self.instrument_settings_path = os.path.join(self.current_dir, 'settings\\instrument_settings.ini')
+        self.test_settings_path = os.path.join(self.current_dir, 'settings\\test_settings.ini')
+        
         self.parameters = Parameters()
         
     def pre_uut_loop(self):
         print('\n1. Create DMM and connection to database')
         #TODO read station settings
+        self.station_settings = StationSettings(filepath=self.station_settings_path)
         #TODO read instrument settings
+        #self.instrument_settings = ConfigManager(config_file_path=self.instrument_settings_path)
         #TODO read test settings
+        #self.test_settings = ConfigManager(config_file_path=self.test_settings_path)
         Sequence1 = CreateInstrumentsSequence()
         Sequence2 = ConfigureInstrumentsSequence()
         
