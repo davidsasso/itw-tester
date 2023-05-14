@@ -15,14 +15,17 @@ from .sequences import CreateTestResultsSequence
 from .sequences import ReportResultsSequence
 from .sequences import CloseInstrumentsSequence
 
-from .utilities.datatypes import StationSettings, InstrumentSettings, TestSettings
-from .utilities.custom_exceptions import exceptions_handler_preuutloop, exceptions_handler_preuut, exceptions_handler_main, exceptions_handler_postuut, exceptions_handler_postuutloop
+from .utilities.custom_exceptions import exceptions_handler_preuutloop
+from .utilities.custom_exceptions import exceptions_handler_preuut
+from .utilities.custom_exceptions import exceptions_handler_main
+from .utilities.custom_exceptions import exceptions_handler_postuut
+from .utilities.custom_exceptions import exceptions_handler_postuutloop
 
 class AbstractProcessModel:
     
     def __init__(self):
         self.parameters = Parameters()
-        print('HERE\n', self.parameters)
+        
     def pre_uut_loop(self):
         print('1. Creating instruments')
     
@@ -59,6 +62,10 @@ class ITWProcessModel(AbstractProcessModel):
         Sequence = CreateInstrumentsSequence(parameters=self.parameters)
         self.parameters = Sequence.parameters
         del Sequence
+    
+        Sequence = InitializeInstrumentsSequence(parameters=self.parameters)
+        self.parameters = Sequence.parameters
+        del Sequence
         
         Sequence = ConfigureInstrumentsSequence(parameters=self.parameters)
         self.parameters = Sequence.parameters
@@ -67,7 +74,15 @@ class ITWProcessModel(AbstractProcessModel):
     @exceptions_handler_preuut
     def pre_uut(self, serial):
         #TODO wait for trigger to create serial
+        Sequence = WaitTriggerSequence(parameters=self.parameters)
+        self.parameters = Sequence.parameters
+        del Sequence
+        
         #TODO serialize (create new serial)
+        Sequence = SerializeSequence(parameters=self.parameters)
+        self.parameters = Sequence.parameters
+        del Sequence
+        
         self.serial = serial
         #TODO serial validations
         
@@ -86,11 +101,18 @@ class ITWProcessModel(AbstractProcessModel):
     
     @exceptions_handler_postuut
     def post_uut(self):
-
+        
+        Sequence = CreateTestResultsSequence(parameters=self.parameters)
+        self.parameters = Sequence.parameters
+        del Sequence
+        
         Sequence = ReportResultsSequence(parameters=self.parameters)
         self.parameters = Sequence.parameters
         del Sequence
     
     @exceptions_handler_postuutloop
     def post_uut_loop(self):
-        print('\n5. Closing references and instruments')
+
+        Sequence = CloseInstrumentsSequence(parameters=self.parameters)
+        self.parameters = Sequence.parameters
+        del Sequence
