@@ -1,6 +1,7 @@
 import os
 
 from .utilities.datatypes import StationSettings, InstrumentSettings, TestSettings
+from .libraries.DMM.DMM import DMM
 
 class AbstractSequence:
     
@@ -45,19 +46,33 @@ class ReadConfigurationFiles(AbstractSequence):
 class CreateInstrumentsSequence(AbstractSequence):
     
     def main(self):
-        #TODO create instrument instances
+        
+        # DMM
+        if self.parameters.InstrumentSettings.DMM.enabled:
+            inst_type = self.parameters.InstrumentSettings.DMM.instrument_type
+            self.parameters.InstrumentSettings.DMM.handle = DMM(instrument_type=inst_type)
+        
         return super().main()
 
 class InitializeInstrumentsSequence(AbstractSequence):
     
     def main(self):
-        #TODO initialize or open instruments
+        
+        # DMM
+        if self.parameters.InstrumentSettings.DMM.enabled:
+            address = self.parameters.InstrumentSettings.DMM.address
+            self.parameters.InstrumentSettings.DMM.handle.open(address=address)
+            
         return super().main()
 
 class ConfigureInstrumentsSequence(AbstractSequence):
     
     def main(self):
-        #TODO configure instruments
+        
+        # DMM
+        if self.parameters.InstrumentSettings.DMM.enabled:
+            self.parameters.InstrumentSettings.DMM.handle.configure()
+        
         return super().main()
 
 # [PreUUT Sequences]
@@ -103,5 +118,9 @@ class ReportResultsSequence(AbstractSequence):
 class CloseInstrumentsSequence(AbstractSequence):
     
     def main(self):
-        #TODO close all opened instruments
+        
+        # DMM
+        if self.parameters.InstrumentSettings.DMM.enabled:
+            self.parameters.InstrumentSettings.DMM.handle.close()
+        
         return super().main()
