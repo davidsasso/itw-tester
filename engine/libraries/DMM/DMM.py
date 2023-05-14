@@ -1,5 +1,6 @@
 
 class DMM:
+    '''Parent/Abstract class'''
     
     def __init__(self, instrument_type: str):
         if instrument_type == "GDM834X":
@@ -20,4 +21,5 @@ class DMM:
         pass
 
 class GDM834X(DMM):
+    '''Child/Implementation class'''
     pass
