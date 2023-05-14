@@ -1,4 +1,4 @@
-class Parameters:
+class DynamicParameters:
     
     def __init__(self):
         self.parameters = {}

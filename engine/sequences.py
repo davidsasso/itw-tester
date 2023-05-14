@@ -1,6 +1,7 @@
 class AbstractSequence:
     
-    def __init__(self):
+    def __init__(self, parameters=None):
+        self.parameters = parameters
         self.name = type(self).__name__
         print(f'[{self.name}]')
         self.run()
@@ -19,49 +20,68 @@ class AbstractSequence:
         self.main()
         self.cleanup()
 
-from .utilities.utilities import ConfigManager
-
 # [PreUUTLoop Sequences]
 
 class CreateInstrumentsSequence(AbstractSequence):
     
-    def setup(self):
-        print('\t\t- read instrument settings')
-        return super().setup()
+    def main(self):
+        #TODO create instrument instances
+        return super().main()
+
+class InitializeInstrumentsSequence(AbstractSequence):
     
     def main(self):
-        print('\t\t- create instruments')
+        #TODO initialize or open instruments
         return super().main()
-    
-    def cleanup(self):
-        return super().cleanup()
 
 class ConfigureInstrumentsSequence(AbstractSequence):
     
     def main(self):
-        print('\t\t- configure instruments')
+        #TODO configure instruments
         return super().main()
 
 # [PreUUT Sequences]
 
-
+class WaitTriggerSequence(AbstractSequence):
+    
+    def main(self):
+        #TODO use instrument for read every certain time to start test
+        return super().main()
+    
+class SerializeSequence(AbstractSequence):
+    
+    def main(self):
+        #TODO define next serial and create it
+        return super().main()
 
 # [Main Sequences]
 
 class ResistanceTestSequence(AbstractSequence):
     
     def main(self):
-        print('\t\t- Executing resistance test')
+        #TODO execute the test meaurement
         return super().main()
 
 
 # [Post Sequences]
 
+class CreateTestResultsSequence(AbstractSequence):
+    
+    def main(self):
+        #TODO create results table
+        return super().main()
+
 class ReportResultsSequence(AbstractSequence):
     
     def main(self):
-        print('\t\t- Reporting results to database')
+        #TODO save results to database
         return super().main()
 
 
 # [PostUUTLoop Sequences]
+
+class CloseInstrumentsSequence(AbstractSequence):
+    
+    def main(self):
+        #TODO close all opened instruments
+        return super().main()
