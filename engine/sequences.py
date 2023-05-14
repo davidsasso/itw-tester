@@ -1,9 +1,13 @@
+import os
+
+from .utilities.datatypes import StationSettings, InstrumentSettings, TestSettings
+
 class AbstractSequence:
     
     def __init__(self, parameters=None):
         self.parameters = parameters
         self.name = type(self).__name__
-        print(f'[{self.name}]')
+        print(f'Executed Sequence: [{self.name}]')
         self.run()
     
     def setup(self):
@@ -21,6 +25,22 @@ class AbstractSequence:
         self.cleanup()
 
 # [PreUUTLoop Sequences]
+
+class ReadConfigurationFiles(AbstractSequence):
+    
+    def main(self):
+        # Define settings paths
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        station_settings_path = os.path.join(current_dir, 'settings\\station_settings.ini')
+        instrument_settings_path = os.path.join(current_dir, 'settings\\instrument_settings.ini')
+        test_settings_path = os.path.join(current_dir, 'settings\\test_settings.ini')
+        
+        # Load Parameters
+        self.parameters.StationSettings = StationSettings(filepath=station_settings_path)
+        self.parameters.InstrumentSettings = InstrumentSettings(filepath=instrument_settings_path)
+        self.parameters.TestSettings = TestSettings(filepath=test_settings_path)
+        
+        return super().main()
 
 class CreateInstrumentsSequence(AbstractSequence):
     
