@@ -82,6 +82,12 @@ class StationSettings(SettingsFile):
         section = 'StationData'
         self.StationData.station_name = self.get_value(section, key='station_name')
         self.StationData.wait_inspection_time = self.get_value(section, key='cell_id')
+    
+    def __str__(self):
+        print('-- station_settings --')
+        StationData = f'[StationData]\nstation_name={self.StationData.station_name}\ncell_id={self.StationData.cell_id}'
+        return_string = StationData
+        return return_string
 
 
 # instrument_settings.ini configuration file data structures
@@ -114,7 +120,9 @@ class InstrumentSettings(SettingsFile):
         self.DMM.address = self.get_value(section, key='address')
     
     def __str__(self):
-        return_string = f'[DMM]\nenabled={self.DMM.enabled}\ninstrument_type={self.DMM.instrument_type}\naddress={self.DMM.address}'
+        print('-- instrument_settings --')
+        DMM = f'[DMM]\nenabled={self.DMM.enabled}\ninstrument_type={self.DMM.instrument_type}\naddress={self.DMM.address}'
+        return_string = DMM
         return return_string
 
 class TestSettings:
