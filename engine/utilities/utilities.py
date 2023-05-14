@@ -63,7 +63,7 @@ class SettingsFile:
         return value
         
 class StationSettings(SettingsFile):
-    ''' Datastructure for StationSettings.ini'''
+    ''' Datastructure for station_settings.ini'''
     
     def __init__(self, filepath):
         self.filepath = filepath
@@ -99,7 +99,7 @@ class DMM:
         self.address = str()
 
 class InstrumentSettings(SettingsFile):
-    ''' Datastructure for StationSettings.ini'''
+    ''' Datastructure for instrument_settings.ini'''
     
     def __init__(self, filepath):
         self.filepath = filepath
@@ -125,9 +125,37 @@ class InstrumentSettings(SettingsFile):
         return_string = DMM
         return return_string
 
-class TestSettings:
-    pass
-
-
-
 # test_settings.ini configuration file data structures
+
+class ResistanceTest:
+    def __init__(self):
+        self.test_active = bool()
+        self.low_limit = float()
+        self.high_limit = float()
+
+class TestSettings(SettingsFile):
+    ''' Datastructure for test_settings.ini'''
+    
+    def __init__(self, filepath):
+        self.filepath = filepath
+        self.ResistanceTest = ResistanceTest()
+        
+        self.read_all()
+    
+    def read_all(self):
+        ''' Read all sections. '''
+        self.read_resistance_test()
+
+    def read_resistance_test(self):
+        ''' Method to read resistance test section. '''
+        
+        section = 'ResistanceTest'
+        self.ResistanceTest.test_active = bool(self.get_value(section, key='test_active'))
+        self.ResistanceTest.low_limit = float(self.get_value(section, key='low_limit'))
+        self.ResistanceTest.high_limit = float(self.get_value(section, key='high_limit'))
+    
+    def __str__(self):
+        print('-- test_settings --')
+        ResistanceTest = f'[ResistanceTest]\ntest_active={self.ResistanceTest.test_active}\nlow_limit={self.ResistanceTest.low_limit}\nhigh_limit={self.ResistanceTest.high_limit}'
+        return_string = ResistanceTest
+        return return_string
