@@ -1,5 +1,4 @@
 from .process_model import AbstractProcessModel
-from .process_model import DummyProcessModel
 
 class Engine:
     
@@ -74,6 +73,6 @@ class Engine:
         self.post_uut_loop()
 
 if __name__ == '__main__':
-    Model = DummyProcessModel()
+    Model = AbstractProcessModel()
     engine = Engine(sequence_process_model=Model)
     engine.run_sequence()

@@ -1,9 +1,15 @@
 import configparser
+import os
 
+class ConfigManager:
+    def __init__(self, config_file_path):
+        self.path = config_file_path
+        self.config = configparser.ConfigParser()
+        self.config.read(config_file_path)
+        self.load_config()
 
-def read_config_file():
-    config = configparser.ConfigParser()
-    config.readfp(open(r'abc.txt'))
-    path1 = config.get('My Section', 'path1')
-    path2 = config.get('My Section', 'path2')
-    path3 = config.get('My Section', 'path3')
+    def load_config(self):
+        for section_name in self.config.sections():
+            section = self.config[section_name]
+            for key in section:
+                setattr(self, key, section[key])
