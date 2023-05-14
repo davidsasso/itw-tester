@@ -103,7 +103,7 @@ class InstrumentSettings(SettingsFile):
     
     def read_all(self):
         ''' Read all sections. '''
-        self.read_station_data()
+        self.read_dmm()
 
     def read_dmm(self):
         ''' Method to read DMM instrumen section. '''
@@ -112,6 +112,10 @@ class InstrumentSettings(SettingsFile):
         self.DMM.enabled = self.get_value(section, key='enabled')
         self.DMM.instrument_type = self.get_value(section, key='instrument_type')
         self.DMM.address = self.get_value(section, key='address')
+    
+    def __str__(self):
+        return_string = f'[DMM]\nenabled={self.DMM.enabled}\ninstrument_type={self.DMM.instrument_type}\naddress={self.DMM.address}'
+        return return_string
 
 class TestSettings:
     pass

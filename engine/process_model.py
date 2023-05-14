@@ -9,7 +9,7 @@ from .sequences import ConfigureInstrumentsSequence
 from .sequences import ResistanceTestSequence
 from .sequences import ReportResultsSequence
 
-from .utilities.utilities import StationSettings
+from .utilities.utilities import StationSettings, InstrumentSettings
 
 
 class AbstractProcessModel:
@@ -52,10 +52,10 @@ class ITWProcessModel(AbstractProcessModel):
     def pre_uut_loop(self):
         print('\n1. Create DMM and connection to database')
         #TODO read station settings
-        print(self.station_settings_path)
         self.station_settings = StationSettings(filepath=self.station_settings_path)
-        #TODO read instrument settings
-        #self.instrument_settings = ConfigManager(config_file_path=self.instrument_settings_path)
+        # Read instrument settings
+        self.instrument_settings = InstrumentSettings(filepath=self.instrument_settings_path)
+        print(self.instrument_settings)
         #TODO read test settings
         #self.test_settings = ConfigManager(config_file_path=self.test_settings_path)
         Sequence1 = CreateInstrumentsSequence()
