@@ -1,11 +1,12 @@
 import os
 
+from .utilities.datatypes import Parameters
 from .utilities.datatypes import StationSettings, InstrumentSettings, TestSettings
 from .libraries.DMM.DMM import DMM
 
 class AbstractSequence:
     
-    def __init__(self, parameters=None):
+    def __init__(self, parameters: Parameters):
         self.parameters = parameters
         self.name = type(self).__name__
         print(f'Executed Sequence: [{self.name}]')
@@ -51,6 +52,9 @@ class CreateInstrumentsSequence(AbstractSequence):
         if self.parameters.InstrumentSettings.DMM.enabled:
             inst_type = self.parameters.InstrumentSettings.DMM.instrument_type
             self.parameters.InstrumentSettings.DMM.handle = DMM(instrument_type=inst_type)
+            print(f'-\tDMM type is: {self.parameters.InstrumentSettings.DMM.handle}')
+        
+        #TBD
         
         return super().main()
 
@@ -62,7 +66,10 @@ class InitializeInstrumentsSequence(AbstractSequence):
         if self.parameters.InstrumentSettings.DMM.enabled:
             address = self.parameters.InstrumentSettings.DMM.address
             self.parameters.InstrumentSettings.DMM.handle.open(address=address)
-            
+            print('-\tDMM opened.')
+        
+        #TBD
+        
         return super().main()
 
 class ConfigureInstrumentsSequence(AbstractSequence):
@@ -72,6 +79,8 @@ class ConfigureInstrumentsSequence(AbstractSequence):
         # DMM
         if self.parameters.InstrumentSettings.DMM.enabled:
             self.parameters.InstrumentSettings.DMM.handle.configure()
+            print('-\tDMM configured.')
+        #TBD
         
         return super().main()
 
@@ -122,5 +131,8 @@ class CloseInstrumentsSequence(AbstractSequence):
         # DMM
         if self.parameters.InstrumentSettings.DMM.enabled:
             self.parameters.InstrumentSettings.DMM.handle.close()
+            print(f'-\tDMM Closed')
+        
+        #TBD
         
         return super().main()

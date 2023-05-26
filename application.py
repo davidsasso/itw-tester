@@ -25,7 +25,7 @@ class Application(QtWidgets.QMainWindow):
         #self.showMaximized() # un-comment to show maximized main window
         
     def closeEvent(self, event):
-        print("CLOSING APP")
+        print("App Closed")
         application_window.close_application()
         event.accept()
 

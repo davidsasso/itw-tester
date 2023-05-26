@@ -47,6 +47,124 @@ class SettingsFile:
             print('Missing section error.')
             value = values[-1].replace('"',"")
         return value
+
+    def get_bool_value(self,section,key):
+        filepath = self.filepath
+        Sections = [section]
+        Keys = [key]
+        parser = configparser.ConfigParser()
+        try:
+            parser.read(filepath)
+        except:
+            raise Exception('Invalid settings file.')
+        assert type(Sections) == type(Keys) == type([]), 'DataType must be list'
+    
+        values = []
+        len_sections = len(Sections)
+        len_options = len(Keys)
+
+        if len_options == len_sections:
+            pass
+        elif len_sections > len_options:
+            len_sections = len_options
+            print('Data trimmed, different input lenght')
+        elif len_sections < len_options:
+            len_options = len_sections
+            print('Data trimmed, different input lenght')
+        
+        try:
+            for n in range(0,len_sections):
+                actual_section = Sections[n]
+                actual_key = Keys[n]
+                value = parser.get(section = actual_section, option = actual_key ).replace('"',"")
+                values.append(value)
+            # casting
+            value = value.upper()
+            if value == 'TRUE':
+                value = True
+            else:
+                value = False
+        except configparser.NoSectionError as  e:
+            print(e)
+            print('Missing section error.')
+            value = values[-1].replace('"',"")
+        return value
+    
+    def get_int_value(self,section,key):
+        filepath = self.filepath
+        Sections = [section]
+        Keys = [key]
+        parser = configparser.ConfigParser()
+        try:
+            parser.read(filepath)
+        except:
+            raise Exception('Invalid settings file.')
+        assert type(Sections) == type(Keys) == type([]), 'DataType must be list'
+    
+        values = []
+        len_sections = len(Sections)
+        len_options = len(Keys)
+
+        if len_options == len_sections:
+            pass
+        elif len_sections > len_options:
+            len_sections = len_options
+            print('Data trimmed, different input lenght')
+        elif len_sections < len_options:
+            len_options = len_sections
+            print('Data trimmed, different input lenght')
+        
+        try:
+            for n in range(0,len_sections):
+                actual_section = Sections[n]
+                actual_key = Keys[n]
+                value = parser.get(section = actual_section, option = actual_key ).replace('"',"")
+                values.append(value)
+            # casting
+            value = int(value)
+        except configparser.NoSectionError as  e:
+            print(e)
+            print('Missing section error.')
+            value = values[-1].replace('"',"")
+        return value
+    
+    def get_float_value(self,section,key):
+        filepath = self.filepath
+        Sections = [section]
+        Keys = [key]
+        parser = configparser.ConfigParser()
+        try:
+            parser.read(filepath)
+        except:
+            raise Exception('Invalid settings file.')
+        assert type(Sections) == type(Keys) == type([]), 'DataType must be list'
+    
+        values = []
+        len_sections = len(Sections)
+        len_options = len(Keys)
+
+        if len_options == len_sections:
+            pass
+        elif len_sections > len_options:
+            len_sections = len_options
+            print('Data trimmed, different input lenght')
+        elif len_sections < len_options:
+            len_options = len_sections
+            print('Data trimmed, different input lenght')
+        
+        try:
+            for n in range(0,len_sections):
+                actual_section = Sections[n]
+                actual_key = Keys[n]
+                value = parser.get(section = actual_section, option = actual_key ).replace('"',"")
+                values.append(value)
+            # casting
+            value = float(value)
+        except configparser.NoSectionError as  e:
+            print(e)
+            print('Missing section error.')
+            value = values[-1].replace('"',"")
+        return value
         
 class StationSettings(SettingsFile):
     ''' Datastructure for station_settings.ini'''
@@ -102,7 +220,7 @@ class InstrumentSettings(SettingsFile):
         ''' Method to read DMM instrumen section. '''
         
         section = 'DMM'
-        self.DMM.enabled = self.get_value(section, key='enabled')
+        self.DMM.enabled = self.get_bool_value(section, key='enabled')
         self.DMM.instrument_type = self.get_value(section, key='instrument_type')
         self.DMM.address = self.get_value(section, key='address')
     
@@ -137,9 +255,9 @@ class TestSettings(SettingsFile):
         ''' Method to read resistance test section. '''
         
         section = 'ResistanceTest'
-        self.ResistanceTest.test_active = bool(self.get_value(section, key='test_active'))
-        self.ResistanceTest.low_limit = float(self.get_value(section, key='low_limit'))
-        self.ResistanceTest.high_limit = float(self.get_value(section, key='high_limit'))
+        self.ResistanceTest.test_active = self.get_bool_value(section, key='test_active')
+        self.ResistanceTest.low_limit = self.get_float_value(section, key='low_limit')
+        self.ResistanceTest.high_limit = self.get_float_value(section, key='high_limit')
     
     def __str__(self):
         print('\n-- test_settings --')

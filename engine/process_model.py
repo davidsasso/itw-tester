@@ -27,10 +27,12 @@ class AbstractProcessModel:
         self.parameters = Parameters()
         
     def pre_uut_loop(self):
-        print('1. Creating instruments')
+        #print('1. Creating instruments')
+        print(f'Running: -- [PreUUTLoop] --')
     
     def pre_uut(self):
-        self.serial = input('2. Scan Serial:')
+        #self.serial = input('2. Scan Serial:')
+        print(f'Running: -- [PreUUT] --')
         
         if self.serial == 'exit':
             continue_testing = False
@@ -39,13 +41,16 @@ class AbstractProcessModel:
         return continue_testing
     
     def main(self):
-        print(f'3. Testing {self.serial}')
+        #print(f'3. Testing {self.serial}')
+        print(f'Running: -- [Main] --')
     
     def post_uut(self):
-        print(f'4. Report results for {self.serial}')
+        #print(f'4. Report results for {self.serial}')
+        print(f'Running: -- [PostUUT] --')
     
     def post_uut_loop(self):
-        print('5. Closing instruments')
+        #print('5. Closing instruments')
+        print(f'Running: -- [PostUUTLoop] --')
 
 class ITWProcessModel(AbstractProcessModel):
     
@@ -54,6 +59,7 @@ class ITWProcessModel(AbstractProcessModel):
 
     @exceptions_handler_preuutloop    
     def pre_uut_loop(self):
+        super().pre_uut_loop()
         
         Sequence = ReadConfigurationFiles(parameters=self.parameters)
         self.parameters = Sequence.parameters
@@ -73,6 +79,7 @@ class ITWProcessModel(AbstractProcessModel):
     
     @exceptions_handler_preuut
     def pre_uut(self, serial):
+        super().pre_uut()
         #TODO wait for trigger to create serial
         Sequence = WaitTriggerSequence(parameters=self.parameters)
         self.parameters = Sequence.parameters
@@ -94,6 +101,7 @@ class ITWProcessModel(AbstractProcessModel):
     
     @exceptions_handler_main
     def main(self):
+        super().main()
         
         Sequence = ResistanceTestSequence(parameters=self.parameters)
         self.parameters = Sequence.parameters
@@ -101,6 +109,7 @@ class ITWProcessModel(AbstractProcessModel):
     
     @exceptions_handler_postuut
     def post_uut(self):
+        super().post_uut()
         
         Sequence = CreateTestResultsSequence(parameters=self.parameters)
         self.parameters = Sequence.parameters
@@ -112,6 +121,7 @@ class ITWProcessModel(AbstractProcessModel):
     
     @exceptions_handler_postuutloop
     def post_uut_loop(self):
+        super().post_uut_loop()
 
         Sequence = CloseInstrumentsSequence(parameters=self.parameters)
         self.parameters = Sequence.parameters
