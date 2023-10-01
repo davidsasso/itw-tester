@@ -3,6 +3,7 @@ from PyQt5.QtGui import QPixmap
 from datetime import date, datetime,timedelta
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import Qt
+from PyQt5.QtWidgets import QApplication, QTableWidgetItem
 import os
 import sys
 
@@ -103,9 +104,26 @@ class CustomApplication():
             continue_testing = self.engine.pre_uut()
             self.engine.main()
             self.engine.post_uut()
+            self.update_views()
         
         else:
             self.engine.post_uut_loop()
+    
+    def update_views(self):
+        self.update_results_table(self.engine.process_model.parameters.TestResults)
+    
+    def update_results_table(self, test_results_list):
+        table = self.app.ui.TestResultsTable
+        table.setRowCount(len(test_results_list))
+        for row, test_result in enumerate(test_results_list):
+            table.setItem(row, 0, QTableWidgetItem(test_result.test_name))
+            table.setItem(row, 1, QTableWidgetItem(str(test_result.low_limit)))
+            table.setItem(row, 2, QTableWidgetItem(str(test_result.high_limit)))
+            table.setItem(row, 3, QTableWidgetItem(str(test_result.measure)))
+            table.setItem(row, 4, QTableWidgetItem(test_result.units))
+            table.setItem(row, 5, QTableWidgetItem(test_result.result))
+            table.setItem(row, 6, QTableWidgetItem(str(test_result.time)))
+        QApplication.processEvents()
     
     def stop(self):
         self.timer.stop()
