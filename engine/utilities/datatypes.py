@@ -272,6 +272,7 @@ class Parameters:
         self.StationSettings = SettingsFile(filepath='')
         self.InstrumentSettings = SettingsFile(filepath='')
         self.TestSettings = SettingsFile(filepath='')
+        self.current_serial = None
     
     def __str__(self):
         return f"Station settings: {self.StationSettings}\nInstrument settings: {self.InstrumentSettings}\nTest settings: {self.TestSettings}"

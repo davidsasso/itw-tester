@@ -2,8 +2,9 @@ import os
 
 from .utilities.datatypes import Parameters
 from .utilities.datatypes import StationSettings, InstrumentSettings, TestSettings
-from .libraries.DMM.DMM import DMM
+from .libraries.DMM.DMM import DMM, Gdm834x
 
+from .utilities.utilities import Timer, Serializer
 class AbstractSequence:
     
     def __init__(self, parameters: Parameters):
@@ -51,7 +52,7 @@ class CreateInstrumentsSequence(AbstractSequence):
         # DMM
         if self.parameters.InstrumentSettings.DMM.enabled:
             inst_type = self.parameters.InstrumentSettings.DMM.instrument_type
-            self.parameters.InstrumentSettings.DMM.handle = DMM(instrument_type=inst_type)
+            self.parameters.InstrumentSettings.DMM.handle = Gdm834x()
             print(f'-\tDMM type is: {self.parameters.InstrumentSettings.DMM.handle}')
         
         #TBD
@@ -63,9 +64,10 @@ class InitializeInstrumentsSequence(AbstractSequence):
     def main(self):
         
         # DMM
-        if self.parameters.InstrumentSettings.DMM.enabled:
-            address = self.parameters.InstrumentSettings.DMM.address
-            self.parameters.InstrumentSettings.DMM.handle.open(address=address)
+        dmm = self.parameters.InstrumentSettings.DMM
+        if dmm.enabled:
+            address = dmm.address
+            dmm.handle.open(address=address)
             print('-\tDMM opened.')
         
         #TBD
@@ -77,9 +79,12 @@ class ConfigureInstrumentsSequence(AbstractSequence):
     def main(self):
         
         # DMM
-        if self.parameters.InstrumentSettings.DMM.enabled:
-            self.parameters.InstrumentSettings.DMM.handle.configure()
-            print('-\tDMM configured.')
+        dmm = self.parameters.InstrumentSettings.DMM
+        if dmm.enabled:
+            operation_mode = dmm.handle.RESISTANCE_MODE
+            operation_range = dmm.handle.RANGE_500
+            dmm.handle.configure(mode=operation_mode, range=operation_range)
+            print(f'-\tDMM configured\nmode:{operation_mode}\nrange:{operation_range}')
         #TBD
         
         return super().main()
@@ -89,13 +94,36 @@ class ConfigureInstrumentsSequence(AbstractSequence):
 class WaitTriggerSequence(AbstractSequence):
     
     def main(self):
-        #TODO use instrument for read every certain time to start test
+        print('Waiting for Trigger...')
+        timer = Timer()
+        timer.reset()
+        
+        target_time = 5000
+        
+        timeout = False
+        
+        while not timeout:
+            current_time = timer.elapsed_time()
+            
+            if current_time >= target_time:
+                timeout = True
+        print('Trigger Detected!')
         return super().main()
+        
     
 class SerializeSequence(AbstractSequence):
     
     def main(self):
         #TODO define next serial and create it
+
+        serializer = Serializer()
+        serial = serializer.generate()
+        del serializer
+        
+        print("Serial Name:", serial)
+        
+        self.parameters.current_serial = serial
+
         return super().main()
 
 # [Main Sequences]
@@ -103,7 +131,13 @@ class SerializeSequence(AbstractSequence):
 class ResistanceTestSequence(AbstractSequence):
     
     def main(self):
-        #TODO execute the test meaurement
+        
+        dmm = self.parameters.InstrumentSettings.DMM.handle
+        
+        response = dmm.measure_resistance()
+        print('Measurement:', response)
+        
+        
         return super().main()
 
 

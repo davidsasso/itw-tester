@@ -1,5 +1,5 @@
 import pyvisa
-from exceptions import UnknownError, OpenError, CommandError, ResponseError, CloseError
+from .exceptions import UnknownError, OpenError, CommandError, ResponseError
 
 class DMM:
     '''Parent/Abstract class'''
@@ -28,12 +28,21 @@ class Gdm834x(DMM):
     
     def __init__(self):
         self.rm = pyvisa.ResourceManager()
+        
+        # Private Variables
+        self.RESISTANCE_MODE = 'RES'
+        self.VOLTAGE_MODE = ''
+        self.CURRENT_MODE = ''
+        self.RANGE_500 = '50E+1'
+        self.RANGE_5000 = ''
+        self.RANGE_50000 = ''
     
     
     def open(self, address):
         try:
             self.rm = pyvisa.ResourceManager()
             self.reference = self.rm.open_resource(address)
+            id = self.get_id()
         except:
             raise OpenError('Connection Failed')
     
@@ -72,10 +81,19 @@ class Gdm834x(DMM):
     def get_serial_number(self):
         return 'SYST:SER?'
 
-    @__execute_command
     def set_mode(self, mode):
-        # Send the instrument resistance mode
-        return 'CONF:RES'
+        if mode == self.RESISTANCE_MODE:
+            self.set_mode_value(mode)
+        elif mode == self.VOLTAGE_MODE:
+            self.set_mode_value(mode)
+        elif mode == self.CURRENT_MODE:
+            self.set_mode_value(mode)
+        else:
+            pass #invalid mode
+    
+    @__execute_command
+    def set_mode_value(self, value):
+        return f'CONF:{value}'
 
     @__execute_command_with_response
     def get_current_mode(self):
@@ -97,9 +115,19 @@ class Gdm834x(DMM):
     def get_current_range(self):
         return 'CONF:RANG?'
 
+    def set_range(self, range):
+        if range == self.RANGE_500:
+            self.set_range_value(range)
+        elif range == self.RANGE_5000:
+            self.set_range_value(range)
+        elif range == self.RANGE_50000:
+            self.set_range_value(range)
+        else:
+            pass #invalid
+    
     @__execute_command
     def set_range_value(self, value):
-        return 'CONF:RANG 50E+1'
+        return f'CONF:RANG {value}'
 
     @__execute_command_with_response
     def measure_resistance(self):
@@ -108,6 +136,14 @@ class Gdm834x(DMM):
     @__execute_command_with_response
     def get_error_status(self):
         return 'SYST:ERR?'
+    
+    def configure(self, mode, range):
+        
+        self.set_mode(mode)
+        self.set_auto_range_status(False)
+        self.set_range(range)
+        
+    
     
     def close(self):
         self.reference.close()

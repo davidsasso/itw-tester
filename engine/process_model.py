@@ -33,11 +33,7 @@ class AbstractProcessModel:
     def pre_uut(self):
         #self.serial = input('2. Scan Serial:')
         print(f'Running: -- [PreUUT] --')
-        
-        if self.serial == 'exit':
-            continue_testing = False
-        else:
-            continue_testing = True
+        continue_testing = True
         return continue_testing
     
     def main(self):
@@ -78,19 +74,18 @@ class ITWProcessModel(AbstractProcessModel):
         del Sequence
     
     @exceptions_handler_preuut
-    def pre_uut(self, serial):
+    def pre_uut(self):
         super().pre_uut()
-        #TODO wait for trigger to create serial
+        
         Sequence = WaitTriggerSequence(parameters=self.parameters)
         self.parameters = Sequence.parameters
         del Sequence
         
-        #TODO serialize (create new serial)
         Sequence = SerializeSequence(parameters=self.parameters)
         self.parameters = Sequence.parameters
         del Sequence
         
-        self.serial = serial
+        self.serial = self.parameters.current_serial
         #TODO serial validations
         
         if self.serial == 'exit':

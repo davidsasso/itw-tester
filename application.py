@@ -39,6 +39,7 @@ class CustomApplication():
             self.app = Application()
         self.app = app
         self.Model = None
+        self.continue_testing = True
         self.connect_signals()
         self.app.show()
 
@@ -54,24 +55,40 @@ class CustomApplication():
         self.Model = ITWProcessModel()
         self.engine = Engine(sequence_process_model=self.Model)
         self.show_user_message('Instruments Setup')
-        self.engine.pre_uut_loop()
-        self.show_user_message('Instruments Ready')
-        self.show_user_message('Waiting for unit')
+        #self.engine.pre_uut_loop()
+        self.run()
+        #self.show_user_message('Instruments Ready')
+        #self.show_user_message('Waiting for unit')
     
     def test(self):
         print('Test\n')
-        serial = self.app.ui.SerialLineEdit.text()
-        if serial == '':
-            self.show_user_message('Invalid Serial')
-        else:
-            self.show_user_message('Testing')
+    
+        self.show_user_message('Testing')
+        
+        self.engine.pre_uut()
+        self.engine.main()
+        self.engine.post_uut()
+        
+        self.app.ui.SerialLineEdit.setText('')
+        self.show_user_message('Scan Serial')
+    
+    def run(self):
+        continue_testing = self.continue_testing
+        
+        self.engine.pre_uut_loop()
+        self.show_user_message('Instruments Ready')
+        self.show_user_message('Waiting for unit')
+        
+        while continue_testing:
             
-            self.engine.pre_uut(serial=serial)
-            self.engine.main()
-            self.engine.post_uut()
-            
-            self.app.ui.SerialLineEdit.setText('')
-            self.show_user_message('Scan Serial')
+            continue_testing = self.engine.pre_uut()
+            if not continue_testing:
+                break
+            else:
+                self.engine.main()
+                self.engine.post_uut()
+        self.engine.post_uut_loop()
+    
     
     def stop(self):
         self.show_user_message('Stopped')
