@@ -237,6 +237,10 @@ class ResistanceTest:
         self.test_active = bool()
         self.low_limit = float()
         self.high_limit = float()
+        self.measurement = float()
+        self.units = str()
+        self.limit_type = str()
+        self.test_time = float()
 
 class TestSettings(SettingsFile):
     ''' Datastructure for test_settings.ini'''
@@ -258,7 +262,9 @@ class TestSettings(SettingsFile):
         self.ResistanceTest.test_active = self.get_bool_value(section, key='test_active')
         self.ResistanceTest.low_limit = self.get_float_value(section, key='low_limit')
         self.ResistanceTest.high_limit = self.get_float_value(section, key='high_limit')
-    
+        self.ResistanceTest.units = self.get_value(section, key='units')
+        self.ResistanceTest.limit_type = self.get_value(section, key='limit_type')
+        
     def __str__(self):
         print('\n-- test_settings --')
         ResistanceTest = f'[ResistanceTest]\ntest_active={self.ResistanceTest.test_active}\nlow_limit={self.ResistanceTest.low_limit}\nhigh_limit={self.ResistanceTest.high_limit}\n'
@@ -273,6 +279,44 @@ class Parameters:
         self.InstrumentSettings = SettingsFile(filepath='')
         self.TestSettings = SettingsFile(filepath='')
         self.current_serial = None
+        self.TestResults = []
     
     def __str__(self):
         return f"Station settings: {self.StationSettings}\nInstrument settings: {self.InstrumentSettings}\nTest settings: {self.TestSettings}"
+    
+class TestResults:
+    def __init__(self, test):
+        self.test = test
+        self.test_name = str()
+        self.low_limit = None
+        self.high_limit = None
+        self.limit_type = str()
+        self.measure = None
+        self.result = str()
+        self.time = float()
+        
+        self.evaluate()
+        
+    def evaluate(self):
+        test = self.test
+        
+        self.test_name = 'Resistance asfasf'
+        self.low_limit = test.low_limit
+        self.high_limit = test.high_limit
+        self.limit_type = test.limit_type
+        self.measure = test.measurement
+        
+        if self.limit_type.upper() == 'LIMIT':
+            in_range = (self.measure >= self.low_limit) and (self.measure <= self.high_limit)
+            self.result = 'PASS' if in_range else 'FAIL'
+        elif self.limit_type.upper() == 'EQUAL':
+            equal = self.measure == self.low_limit
+            self.result = 'PASS' if equal else 'FAIL'
+        else:
+            in_range = (self.measure >= self.low_limit) and (self.measure <= self.high_limit)
+            self.result = 'PASS' if in_range else 'FAIL' 
+        
+        self.time = test.test_time
+    
+    def __str__(self):
+        return f'TestName:{self.test_name} Measure:{self.measure} Time:{self.time} Result:{self.result}'

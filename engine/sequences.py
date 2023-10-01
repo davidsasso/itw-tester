@@ -2,6 +2,7 @@ import os
 
 from .utilities.datatypes import Parameters
 from .utilities.datatypes import StationSettings, InstrumentSettings, TestSettings
+from .utilities.datatypes import TestResults
 from .libraries.DMM.DMM import DMM, Gdm834x
 
 from .utilities.utilities import Timer, Serializer
@@ -132,10 +133,20 @@ class ResistanceTestSequence(AbstractSequence):
     
     def main(self):
         
-        dmm = self.parameters.InstrumentSettings.DMM.handle
+        tests = self.parameters.TestSettings
         
-        response = dmm.measure_resistance()
-        print('Measurement:', response)
+        if tests.ResistanceTest.test_active:
+            #TODO measure time
+            test_timer = Timer()
+            test_timer.reset()
+            
+            dmm = self.parameters.InstrumentSettings.DMM.handle
+            response = dmm.measure_resistance()
+            measurement = float(response)
+            
+            time = test_timer.elapsed_time_seconds()
+            tests.ResistanceTest.measurement = measurement
+            tests.ResistanceTest.test_time = time
         
         
         return super().main()
@@ -146,13 +157,25 @@ class ResistanceTestSequence(AbstractSequence):
 class CreateTestResultsSequence(AbstractSequence):
     
     def main(self):
-        #TODO create results table
+        
+        tests = self.parameters.TestSettings
+        
+        if tests.ResistanceTest.test_active:
+            results = TestResults(test=tests.ResistanceTest)
+            self.parameters.TestResults.append(results)
+            tests.ResistanceTest.measurement = None
+            tests.ResistanceTest.test_time = None
+        
+        print('--------------------- TEST RESULTS ---------------------')
+        for test in self.parameters.TestResults:
+            print(test)
         return super().main()
 
 class ReportResultsSequence(AbstractSequence):
     
     def main(self):
         #TODO save results to database
+        self.parameters.TestResults.clear()
         return super().main()
 
 
@@ -163,8 +186,9 @@ class CloseInstrumentsSequence(AbstractSequence):
     def main(self):
         
         # DMM
-        if self.parameters.InstrumentSettings.DMM.enabled:
-            self.parameters.InstrumentSettings.DMM.handle.close()
+        dmm = self.parameters.InstrumentSettings.DMM
+        if dmm.enabled:
+            dmm.handle.close()
             print(f'-\tDMM Closed')
         
         #TBD

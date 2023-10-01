@@ -79,7 +79,12 @@ class CustomApplication():
         self.show_user_message('Instruments Ready')
         self.show_user_message('Waiting for unit')
         
-        while continue_testing:
+        self.timer = QtCore.QTimer()
+        self.timer.timeout.connect(self.wait_for_trigger)
+        self.timer_interval = 3000  # 5000 milliseconds = 5 seconds
+        
+        self.timer.start(self.timer_interval)
+        """ while continue_testing:
             
             continue_testing = self.engine.pre_uut()
             if not continue_testing:
@@ -87,10 +92,23 @@ class CustomApplication():
             else:
                 self.engine.main()
                 self.engine.post_uut()
-        self.engine.post_uut_loop()
+        self.engine.post_uut_loop() """
     
+    def wait_for_trigger(self):
+        print('-------------------------------------------------------------------------------------------')
+        continue_testing = self.continue_testing
+        
+        if continue_testing:
+            
+            continue_testing = self.engine.pre_uut()
+            self.engine.main()
+            self.engine.post_uut()
+        
+        else:
+            self.engine.post_uut_loop()
     
     def stop(self):
+        self.timer.stop()
         self.show_user_message('Stopped')
         print('Stopped')
         try:

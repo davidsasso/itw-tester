@@ -77,9 +77,9 @@ class ITWProcessModel(AbstractProcessModel):
     def pre_uut(self):
         super().pre_uut()
         
-        Sequence = WaitTriggerSequence(parameters=self.parameters)
-        self.parameters = Sequence.parameters
-        del Sequence
+        #Sequence = WaitTriggerSequence(parameters=self.parameters)
+        #self.parameters = Sequence.parameters
+        #del Sequence
         
         Sequence = SerializeSequence(parameters=self.parameters)
         self.parameters = Sequence.parameters

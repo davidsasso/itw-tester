@@ -29,6 +29,10 @@ class Timer:
     def elapsed_time(self):
         """Get the elapsed time in milliseconds since the last reset."""
         return (time.time() - self.start_time) * 1000  # Convert seconds to milliseconds
+    
+    def elapsed_time_seconds(self):
+        """Get the elapsed time in milliseconds since the last reset."""
+        return (time.time() - self.start_time)
 
 class Serializer:
     
