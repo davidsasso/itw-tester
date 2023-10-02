@@ -1,2 +1,2 @@
 @echo off
-cmd /k "cd /d C:\DSV\test-engine\virtualenv\Scripts & activate & cd C:\DSV\test-engine\ui & pyuic5 gui.ui -o gui.py & exit"
+cmd /k "cd /d C:\ITW\itw-tester\virtualenv\Scripts & activate & cd C:\ITW\itw-tester\ui & pyuic5 gui.ui -o gui.py & exit"

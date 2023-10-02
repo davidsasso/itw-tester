@@ -280,6 +280,7 @@ class Parameters:
         self.TestSettings = SettingsFile(filepath='')
         self.current_serial = None
         self.TestResults = []
+        self.general_result = str()
     
     def __str__(self):
         return f"Station settings: {self.StationSettings}\nInstrument settings: {self.InstrumentSettings}\nTest settings: {self.TestSettings}"
@@ -292,6 +293,7 @@ class TestResults:
         self.high_limit = None
         self.limit_type = str()
         self.measure = None
+        self.units = str()
         self.result = str()
         self.time = float()
         
@@ -300,11 +302,12 @@ class TestResults:
     def evaluate(self):
         test = self.test
         
-        self.test_name = 'Resistance asfasf'
+        self.test_name = 'ResistanceTest'
         self.low_limit = test.low_limit
         self.high_limit = test.high_limit
         self.limit_type = test.limit_type
         self.measure = test.measurement
+        self.units = test.units
         
         if self.limit_type.upper() == 'LIMIT':
             in_range = (self.measure >= self.low_limit) and (self.measure <= self.high_limit)

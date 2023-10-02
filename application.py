@@ -81,7 +81,7 @@ class CustomApplication():
         self.show_user_message('Waiting for unit')
         
         self.timer = QtCore.QTimer()
-        self.timer.timeout.connect(self.wait_for_trigger)
+        self.timer.timeout.connect(self.test_by_trigger)
         self.timer_interval = 3000  # 5000 milliseconds = 5 seconds
         
         self.timer.start(self.timer_interval)
@@ -95,13 +95,16 @@ class CustomApplication():
                 self.engine.post_uut()
         self.engine.post_uut_loop() """
     
-    def wait_for_trigger(self):
+    def test_by_trigger(self):
+        self.reset_indicators()
+        QApplication.processEvents()
         print('-------------------------------------------------------------------------------------------')
         continue_testing = self.continue_testing
         
         if continue_testing:
             
             continue_testing = self.engine.pre_uut()
+            self.app.ui.SerialLineEdit.setText(self.engine.process_model.parameters.current_serial)
             self.engine.main()
             self.engine.post_uut()
             self.update_views()
@@ -110,10 +113,24 @@ class CustomApplication():
             self.engine.post_uut_loop()
     
     def update_views(self):
+        general_result = self.engine.process_model.parameters.general_result
+        self.app.ui.MainMessageLineEdit.setText(general_result)
+        
+        if general_result == 'PASS':
+            self.app.ui.MainMessageLineEdit.setStyleSheet('background-color: green;')
+        elif general_result == 'FAIL':
+            self.app.ui.MainMessageLineEdit.setStyleSheet('background-color: red;')
+        else:
+            pass
+        
+        self.app.ui.UserMessageLabel.setText('Waiting for Trigger..')
+        
         self.update_results_table(self.engine.process_model.parameters.TestResults)
     
     def update_results_table(self, test_results_list):
         table = self.app.ui.TestResultsTable
+        font = QtGui.QFont("Arial", 10)
+        table.setFont(font)
         table.setRowCount(len(test_results_list))
         for row, test_result in enumerate(test_results_list):
             table.setItem(row, 0, QTableWidgetItem(test_result.test_name))
@@ -124,6 +141,20 @@ class CustomApplication():
             table.setItem(row, 5, QTableWidgetItem(test_result.result))
             table.setItem(row, 6, QTableWidgetItem(str(test_result.time)))
         QApplication.processEvents()
+    
+    def reset_indicators(self):
+        self.app.ui.MainMessageLineEdit.setText('TESTING')
+        self.app.ui.MainMessageLineEdit.setStyleSheet('background-color: yellow;')
+        
+        self.app.ui.UserMessageLabel.setText('Testing...')
+        
+        self.app.ui.SerialLineEdit.setText('')
+        
+        table = self.app.ui.TestResultsTable
+        table.clearContents()
+        table.setRowCount(0)
+        QApplication.processEvents()
+        
     
     def stop(self):
         self.timer.stop()

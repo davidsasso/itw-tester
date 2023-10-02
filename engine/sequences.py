@@ -145,6 +145,7 @@ class ResistanceTestSequence(AbstractSequence):
             measurement = float(response)
             
             time = test_timer.elapsed_time_seconds()
+            time = round(time, 2)
             tests.ResistanceTest.measurement = measurement
             tests.ResistanceTest.test_time = time
         
@@ -158,6 +159,8 @@ class CreateTestResultsSequence(AbstractSequence):
     
     def main(self):
         
+        self.parameters.TestResults.clear() # resets results
+        
         tests = self.parameters.TestSettings
         
         if tests.ResistanceTest.test_active:
@@ -166,16 +169,22 @@ class CreateTestResultsSequence(AbstractSequence):
             tests.ResistanceTest.measurement = None
             tests.ResistanceTest.test_time = None
         
-        print('--------------------- TEST RESULTS ---------------------')
+        general_result = 'FAIL'
+        all_results = []
         for test in self.parameters.TestResults:
-            print(test)
+            all_results.append(test.result)
+            
+        if not 'FAIL' in all_results:
+            general_result = 'PASS'
+        
+        self.parameters.general_result = general_result
         return super().main()
 
 class ReportResultsSequence(AbstractSequence):
     
     def main(self):
         #TODO save results to database
-        self.parameters.TestResults.clear()
+        #self.parameters.TestResults.clear()
         return super().main()
 
 
