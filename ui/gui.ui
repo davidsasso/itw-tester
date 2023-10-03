@@ -75,10 +75,11 @@
      <bool>false</bool>
     </property>
     <property name="styleSheet">
-     <string notr="true">background-color: #00723A;</string>
+     <string notr="true">background-color: orange;
+/*background-color: #00723A;</string>
     </property>
     <property name="text">
-     <string>PASS</string>
+     <string>PRESS START</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
@@ -93,10 +94,10 @@
    <widget class="QTableWidget" name="TestResultsTable">
     <property name="geometry">
      <rect>
-      <x>80</x>
-      <y>360</y>
+      <x>50</x>
+      <y>480</y>
       <width>891</width>
-      <height>501</height>
+      <height>351</height>
      </rect>
     </property>
     <property name="font">
@@ -111,7 +112,25 @@
      <bool>false</bool>
     </property>
     <property name="styleSheet">
-     <string notr="true">border: 1px solid #00723A</string>
+     <string notr="true">QTableWidget {
+    background-color: #f0f0f0; /* Color de fondo */
+    alternate-background-color: #e0e0e0; /* Color de fondo alternativo para filas */
+    selection-background-color: #4CAF50; /* Color de fondo de selección */
+    selection-color: white; /* Color del texto de selección */
+}
+
+QTableWidget::item {
+    padding: 3px; /* Espaciado interno de las celdas */
+    border-bottom: 1px solid #ccc; /* Borde inferior de las celdas */
+}
+
+QTableWidget::item:selected {
+    background-color: #4CAF50; /* Color de fondo de la celda seleccionada */
+    color: white; /* Color del texto de la celda seleccionada */
+}
+
+/*border: 1px solid #00723A
+</string>
     </property>
     <property name="frameShape">
      <enum>QFrame::StyledPanel</enum>
@@ -175,9 +194,9 @@
      <property name="foreground">
       <brush brushstyle="SolidPattern">
        <color alpha="255">
-        <red>0</red>
-        <green>114</green>
-        <blue>58</blue>
+        <red>11</red>
+        <green>11</green>
+        <blue>11</blue>
        </color>
       </brush>
      </property>
@@ -199,9 +218,9 @@
      <property name="foreground">
       <brush brushstyle="SolidPattern">
        <color alpha="255">
-        <red>0</red>
-        <green>114</green>
-        <blue>58</blue>
+        <red>11</red>
+        <green>11</green>
+        <blue>11</blue>
        </color>
       </brush>
      </property>
@@ -223,9 +242,9 @@
      <property name="foreground">
       <brush brushstyle="SolidPattern">
        <color alpha="255">
-        <red>0</red>
-        <green>114</green>
-        <blue>58</blue>
+        <red>11</red>
+        <green>11</green>
+        <blue>11</blue>
        </color>
       </brush>
      </property>
@@ -247,9 +266,9 @@
      <property name="foreground">
       <brush brushstyle="SolidPattern">
        <color alpha="255">
-        <red>0</red>
-        <green>114</green>
-        <blue>58</blue>
+        <red>11</red>
+        <green>11</green>
+        <blue>11</blue>
        </color>
       </brush>
      </property>
@@ -271,9 +290,9 @@
      <property name="foreground">
       <brush brushstyle="SolidPattern">
        <color alpha="255">
-        <red>0</red>
-        <green>114</green>
-        <blue>58</blue>
+        <red>11</red>
+        <green>11</green>
+        <blue>11</blue>
        </color>
       </brush>
      </property>
@@ -295,9 +314,9 @@
      <property name="foreground">
       <brush brushstyle="SolidPattern">
        <color alpha="255">
-        <red>0</red>
-        <green>114</green>
-        <blue>58</blue>
+        <red>11</red>
+        <green>11</green>
+        <blue>11</blue>
        </color>
       </brush>
      </property>
@@ -322,9 +341,9 @@
      <property name="foreground">
       <brush brushstyle="SolidPattern">
        <color alpha="255">
-        <red>0</red>
-        <green>114</green>
-        <blue>58</blue>
+        <red>11</red>
+        <green>11</green>
+        <blue>11</blue>
        </color>
       </brush>
      </property>
@@ -348,7 +367,7 @@
      </font>
     </property>
     <property name="styleSheet">
-     <string notr="true">color: #00723A;</string>
+     <string notr="true">color: #0b0b0b;</string>
     </property>
     <property name="text">
      <string>Start Test</string>
@@ -364,7 +383,8 @@
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">background-color: #00723A;</string>
+     <string notr="true">background-color: #0b0b0b;
+/*background-color: #00723A;</string>
     </property>
     <property name="text">
      <string/>
@@ -373,10 +393,10 @@
    <widget class="QLineEdit" name="SerialLineEdit">
     <property name="geometry">
      <rect>
-      <x>80</x>
-      <y>215</y>
-      <width>761</width>
-      <height>31</height>
+      <x>50</x>
+      <y>360</y>
+      <width>751</width>
+      <height>51</height>
      </rect>
     </property>
     <property name="font">
@@ -388,7 +408,7 @@
      </font>
     </property>
     <property name="styleSheet">
-     <string notr="true">border: 1px solid #00723A</string>
+     <string notr="true">border: 1px solid #0b0b0b</string>
     </property>
     <property name="text">
      <string/>
@@ -403,10 +423,10 @@
    <widget class="QLineEdit" name="ProductInformationLineEdit">
     <property name="geometry">
      <rect>
-      <x>80</x>
-      <y>275</y>
+      <x>50</x>
+      <y>230</y>
       <width>891</width>
-      <height>71</height>
+      <height>61</height>
      </rect>
     </property>
     <property name="sizePolicy">
@@ -423,7 +443,8 @@
      </font>
     </property>
     <property name="styleSheet">
-     <string notr="true">border: 1px solid #00723A</string>
+     <string notr="true">border: 1px solid #0b0b0b
+/*border: 1px solid #00723A</string>
     </property>
     <property name="text">
      <string/>
@@ -438,9 +459,9 @@
    <widget class="QLabel" name="SerialNumberLabel">
     <property name="geometry">
      <rect>
-      <x>80</x>
-      <y>190</y>
-      <width>131</width>
+      <x>50</x>
+      <y>330</y>
+      <width>241</width>
       <height>16</height>
      </rect>
     </property>
@@ -456,15 +477,15 @@
      <string notr="true">color: #747474;</string>
     </property>
     <property name="text">
-     <string>Serial Number</string>
+     <string>Serial Number:</string>
     </property>
    </widget>
    <widget class="QLabel" name="ProductInformationLabel">
     <property name="geometry">
      <rect>
-      <x>80</x>
-      <y>250</y>
-      <width>191</width>
+      <x>50</x>
+      <y>195</y>
+      <width>151</width>
       <height>21</height>
      </rect>
     </property>
@@ -480,7 +501,7 @@
      <string notr="true">color: #747474;</string>
     </property>
     <property name="text">
-     <string>Product Information</string>
+     <string>Part Number:</string>
     </property>
    </widget>
    <widget class="QLabel" name="StationNameLabel">
@@ -504,7 +525,7 @@
      <string notr="true">color: #747474;</string>
     </property>
     <property name="text">
-     <string>STATION_NAME</string>
+     <string>CELL-1</string>
     </property>
    </widget>
    <widget class="QLabel" name="UserMessageLabel">
@@ -537,10 +558,10 @@
    <widget class="QLineEdit" name="TotalTestTimeLineEdit">
     <property name="geometry">
      <rect>
-      <x>740</x>
-      <y>890</y>
-      <width>101</width>
-      <height>31</height>
+      <x>500</x>
+      <y>880</y>
+      <width>111</width>
+      <height>41</height>
      </rect>
     </property>
     <property name="font">
@@ -552,7 +573,7 @@
      </font>
     </property>
     <property name="styleSheet">
-     <string notr="true">border: 1px solid #00723A</string>
+     <string notr="true">border: 1px solid #0b0b0b</string>
     </property>
     <property name="text">
      <string>00:06</string>
@@ -567,38 +588,41 @@
    <widget class="QLabel" name="TotalTestTimeLabel">
     <property name="geometry">
      <rect>
-      <x>590</x>
-      <y>890</y>
-      <width>141</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Arial Black</family>
-      <pointsize>12</pointsize>
-      <weight>75</weight>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">color: #747474;</string>
-    </property>
-    <property name="text">
-     <string>Total Test Time</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="StopButton">
-    <property name="geometry">
-     <rect>
-      <x>860</x>
+      <x>310</x>
       <y>880</y>
-      <width>111</width>
+      <width>181</width>
       <height>41</height>
      </rect>
     </property>
     <property name="font">
      <font>
+      <family>Arial Black</family>
+      <pointsize>12</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: #747474;</string>
+    </property>
+    <property name="text">
+     <string>Total Test Time:</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="StopButton">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>810</x>
+      <y>880</y>
+      <width>131</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
       <family>Arial</family>
       <pointsize>12</pointsize>
       <weight>75</weight>
@@ -606,321 +630,17 @@
      </font>
     </property>
     <property name="styleSheet">
-     <string notr="true">color: #00723A;</string>
+     <string notr="true">color: #0b0b0b;</string>
     </property>
     <property name="text">
      <string>Stop</string>
     </property>
    </widget>
-   <widget class="QLabel" name="TopLineLabel_2">
-    <property name="geometry">
-     <rect>
-      <x>990</x>
-      <y>640</y>
-      <width>871</width>
-      <height>1</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">background-color: #00723A;</string>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-   </widget>
-   <widget class="QWidget" name="verticalLayoutWidget">
-    <property name="geometry">
-     <rect>
-      <x>1000</x>
-      <y>690</y>
-      <width>841</width>
-      <height>271</height>
-     </rect>
-    </property>
-    <layout class="QVBoxLayout" name="UnitsTestedByHourLayout"/>
-   </widget>
-   <widget class="QLabel" name="UnitsTestedByHourLabel">
-    <property name="geometry">
-     <rect>
-      <x>1000</x>
-      <y>650</y>
-      <width>211</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Arial Black</family>
-      <pointsize>12</pointsize>
-      <weight>75</weight>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">color: #747474;</string>
-    </property>
-    <property name="text">
-     <string>Units Tested By Hour</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="TopFailuresLabel">
-    <property name="geometry">
-     <rect>
-      <x>1080</x>
-      <y>420</y>
-      <width>131</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Arial Black</family>
-      <pointsize>12</pointsize>
-      <weight>75</weight>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">color: #747474;</string>
-    </property>
-    <property name="text">
-     <string>Top 5 Failures</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="HourlyYieldLabel">
-    <property name="geometry">
-     <rect>
-      <x>1420</x>
-      <y>210</y>
-      <width>131</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Arial Black</family>
-      <pointsize>12</pointsize>
-      <weight>75</weight>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">color: #747474;</string>
-    </property>
-    <property name="text">
-     <string>Hourly Yield</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="YieldLabel">
-    <property name="geometry">
-     <rect>
-      <x>1090</x>
-      <y>210</y>
-      <width>51</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Arial Black</family>
-      <pointsize>12</pointsize>
-      <weight>75</weight>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">color: black;</string>
-    </property>
-    <property name="text">
-     <string>Yield</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="ValueYieldLabel">
-    <property name="geometry">
-     <rect>
-      <x>1030</x>
-      <y>250</y>
-      <width>171</width>
-      <height>71</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Arial Black</family>
-      <pointsize>50</pointsize>
-      <weight>75</weight>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">color: orange;</string>
-    </property>
-    <property name="text">
-     <string>73</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignCenter</set>
-    </property>
-   </widget>
-   <widget class="QTableWidget" name="TopFailuresTable">
-    <property name="geometry">
-     <rect>
-      <x>1000</x>
-      <y>450</y>
-      <width>301</width>
-      <height>151</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Arial</family>
-      <pointsize>8</pointsize>
-      <weight>50</weight>
-      <bold>false</bold>
-     </font>
-    </property>
-    <property name="autoFillBackground">
-     <bool>false</bool>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">border: 1px solid #00723A</string>
-    </property>
-    <property name="frameShape">
-     <enum>QFrame::StyledPanel</enum>
-    </property>
-    <property name="frameShadow">
-     <enum>QFrame::Sunken</enum>
-    </property>
-    <property name="sizeAdjustPolicy">
-     <enum>QAbstractScrollArea::AdjustIgnored</enum>
-    </property>
-    <property name="tabKeyNavigation">
-     <bool>false</bool>
-    </property>
-    <property name="alternatingRowColors">
-     <bool>true</bool>
-    </property>
-    <property name="selectionMode">
-     <enum>QAbstractItemView::SingleSelection</enum>
-    </property>
-    <property name="selectionBehavior">
-     <enum>QAbstractItemView::SelectRows</enum>
-    </property>
-    <property name="textElideMode">
-     <enum>Qt::ElideMiddle</enum>
-    </property>
-    <property name="verticalScrollMode">
-     <enum>QAbstractItemView::ScrollPerPixel</enum>
-    </property>
-    <property name="showGrid">
-     <bool>true</bool>
-    </property>
-    <property name="gridStyle">
-     <enum>Qt::NoPen</enum>
-    </property>
-    <property name="sortingEnabled">
-     <bool>true</bool>
-    </property>
-    <attribute name="horizontalHeaderCascadingSectionResizes">
-     <bool>false</bool>
-    </attribute>
-    <attribute name="horizontalHeaderStretchLastSection">
-     <bool>true</bool>
-    </attribute>
-    <attribute name="verticalHeaderVisible">
-     <bool>false</bool>
-    </attribute>
-    <column>
-     <property name="text">
-      <string>Test</string>
-     </property>
-     <property name="font">
-      <font>
-       <family>Arial Black</family>
-       <pointsize>8</pointsize>
-       <weight>50</weight>
-       <bold>false</bold>
-      </font>
-     </property>
-     <property name="textAlignment">
-      <set>AlignCenter</set>
-     </property>
-     <property name="foreground">
-      <brush brushstyle="SolidPattern">
-       <color alpha="255">
-        <red>0</red>
-        <green>114</green>
-        <blue>58</blue>
-       </color>
-      </brush>
-     </property>
-    </column>
-    <column>
-     <property name="text">
-      <string>Qty</string>
-     </property>
-     <property name="font">
-      <font>
-       <family>Arial Black</family>
-       <pointsize>8</pointsize>
-       <weight>50</weight>
-       <bold>false</bold>
-      </font>
-     </property>
-     <property name="textAlignment">
-      <set>AlignCenter</set>
-     </property>
-     <property name="foreground">
-      <brush brushstyle="SolidPattern">
-       <color alpha="255">
-        <red>0</red>
-        <green>114</green>
-        <blue>58</blue>
-       </color>
-      </brush>
-     </property>
-    </column>
-   </widget>
-   <widget class="QWidget" name="verticalLayoutWidget_2">
-    <property name="geometry">
-     <rect>
-      <x>1320</x>
-      <y>250</y>
-      <width>501</width>
-      <height>351</height>
-     </rect>
-    </property>
-    <layout class="QVBoxLayout" name="HourlyYieldLayout"/>
-   </widget>
-   <widget class="QLabel" name="DomainLabel">
-    <property name="geometry">
-     <rect>
-      <x>80</x>
-      <y>870</y>
-      <width>271</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Arial</family>
-      <pointsize>8</pointsize>
-      <weight>75</weight>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="styleSheet">
-     <string notr="true"/>
-    </property>
-    <property name="text">
-     <string>-----------------------</string>
-    </property>
-   </widget>
    <widget class="QLabel" name="IPAddressLabel">
     <property name="geometry">
      <rect>
-      <x>80</x>
-      <y>890</y>
+      <x>50</x>
+      <y>1010</y>
       <width>91</width>
       <height>20</height>
      </rect>
@@ -943,8 +663,8 @@
    <widget class="QLabel" name="StepLabel">
     <property name="geometry">
      <rect>
-      <x>80</x>
-      <y>910</y>
+      <x>50</x>
+      <y>1030</y>
       <width>51</width>
       <height>20</height>
      </rect>
@@ -965,12 +685,15 @@
     </property>
    </widget>
    <widget class="QPushButton" name="TestButton">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
-      <x>850</x>
-      <y>210</y>
+      <x>820</x>
+      <y>360</y>
       <width>121</width>
-      <height>41</height>
+      <height>51</height>
      </rect>
     </property>
     <property name="font">
@@ -982,12 +705,190 @@
      </font>
     </property>
     <property name="styleSheet">
-     <string notr="true">color: #00723A;</string>
+     <string notr="true">color: #0b0b0b;</string>
     </property>
     <property name="text">
      <string>Test</string>
     </property>
    </widget>
+   <widget class="QLabel" name="SerialNumberLabel_2">
+    <property name="geometry">
+     <rect>
+      <x>50</x>
+      <y>450</y>
+      <width>241</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Arial Black</family>
+      <pointsize>12</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: #747474;</string>
+    </property>
+    <property name="text">
+     <string>Results:</string>
+    </property>
+   </widget>
+   <widget class="QStackedWidget" name="stackedWidget">
+    <property name="geometry">
+     <rect>
+      <x>970</x>
+      <y>190</y>
+      <width>921</width>
+      <height>761</height>
+     </rect>
+    </property>
+    <property name="currentIndex">
+     <number>1</number>
+    </property>
+    <widget class="QWidget" name="page">
+     <widget class="QWidget" name="verticalLayoutWidget">
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>490</y>
+        <width>841</width>
+        <height>271</height>
+       </rect>
+      </property>
+      <layout class="QVBoxLayout" name="UnitsTestedByHourLayout"/>
+     </widget>
+     <widget class="QLabel" name="ValueYieldLabel">
+      <property name="geometry">
+       <rect>
+        <x>60</x>
+        <y>60</y>
+        <width>171</width>
+        <height>71</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Arial Black</family>
+        <pointsize>50</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: orange;</string>
+      </property>
+      <property name="text">
+       <string>90</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+     <widget class="QLabel" name="YieldLabel">
+      <property name="geometry">
+       <rect>
+        <x>120</x>
+        <y>20</y>
+        <width>71</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Arial Black</family>
+        <pointsize>12</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: black;</string>
+      </property>
+      <property name="text">
+       <string>Yield</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="UnitsTestedByHourLabel">
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>450</y>
+        <width>251</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Arial Black</family>
+        <pointsize>12</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: #747474;</string>
+      </property>
+      <property name="text">
+       <string>Units Tested By Hour:</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="TopLineLabel_2">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>430</y>
+        <width>871</width>
+        <height>1</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: #00723A;</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="page_2"/>
+   </widget>
+   <widget class="QLabel" name="TopLineLabel_3">
+    <property name="geometry">
+     <rect>
+      <x>50</x>
+      <y>860</y>
+      <width>890</width>
+      <height>1</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: #0b0b0b;</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <zorder>stackedWidget</zorder>
+   <zorder>LogoLabel</zorder>
+   <zorder>MainMessageLineEdit</zorder>
+   <zorder>TestResultsTable</zorder>
+   <zorder>StartButton</zorder>
+   <zorder>TopLineLabel</zorder>
+   <zorder>SerialLineEdit</zorder>
+   <zorder>ProductInformationLineEdit</zorder>
+   <zorder>SerialNumberLabel</zorder>
+   <zorder>ProductInformationLabel</zorder>
+   <zorder>StationNameLabel</zorder>
+   <zorder>UserMessageLabel</zorder>
+   <zorder>TotalTestTimeLineEdit</zorder>
+   <zorder>TotalTestTimeLabel</zorder>
+   <zorder>StopButton</zorder>
+   <zorder>IPAddressLabel</zorder>
+   <zorder>StepLabel</zorder>
+   <zorder>TestButton</zorder>
+   <zorder>SerialNumberLabel_2</zorder>
+   <zorder>TopLineLabel_3</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -995,7 +896,7 @@
      <x>0</x>
      <y>0</y>
      <width>1920</width>
-     <height>21</height>
+     <height>26</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">

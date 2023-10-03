@@ -15,7 +15,7 @@ class Engine:
         '''
         self.process_model.pre_uut_loop()
     
-    def pre_uut(self, serial):
+    def pre_uut(self):
         '''
         
         2.[Pre-Test configuration]
@@ -23,7 +23,7 @@ class Engine:
         - Serial from unit under test (uut).
         
         '''
-        continue_testing = self.process_model.pre_uut(serial=serial)
+        continue_testing = self.process_model.pre_uut()
         return continue_testing
     
     def main(self):

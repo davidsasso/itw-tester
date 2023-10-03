@@ -47,6 +47,124 @@ class SettingsFile:
             print('Missing section error.')
             value = values[-1].replace('"',"")
         return value
+
+    def get_bool_value(self,section,key):
+        filepath = self.filepath
+        Sections = [section]
+        Keys = [key]
+        parser = configparser.ConfigParser()
+        try:
+            parser.read(filepath)
+        except:
+            raise Exception('Invalid settings file.')
+        assert type(Sections) == type(Keys) == type([]), 'DataType must be list'
+    
+        values = []
+        len_sections = len(Sections)
+        len_options = len(Keys)
+
+        if len_options == len_sections:
+            pass
+        elif len_sections > len_options:
+            len_sections = len_options
+            print('Data trimmed, different input lenght')
+        elif len_sections < len_options:
+            len_options = len_sections
+            print('Data trimmed, different input lenght')
+        
+        try:
+            for n in range(0,len_sections):
+                actual_section = Sections[n]
+                actual_key = Keys[n]
+                value = parser.get(section = actual_section, option = actual_key ).replace('"',"")
+                values.append(value)
+            # casting
+            value = value.upper()
+            if value == 'TRUE':
+                value = True
+            else:
+                value = False
+        except configparser.NoSectionError as  e:
+            print(e)
+            print('Missing section error.')
+            value = values[-1].replace('"',"")
+        return value
+    
+    def get_int_value(self,section,key):
+        filepath = self.filepath
+        Sections = [section]
+        Keys = [key]
+        parser = configparser.ConfigParser()
+        try:
+            parser.read(filepath)
+        except:
+            raise Exception('Invalid settings file.')
+        assert type(Sections) == type(Keys) == type([]), 'DataType must be list'
+    
+        values = []
+        len_sections = len(Sections)
+        len_options = len(Keys)
+
+        if len_options == len_sections:
+            pass
+        elif len_sections > len_options:
+            len_sections = len_options
+            print('Data trimmed, different input lenght')
+        elif len_sections < len_options:
+            len_options = len_sections
+            print('Data trimmed, different input lenght')
+        
+        try:
+            for n in range(0,len_sections):
+                actual_section = Sections[n]
+                actual_key = Keys[n]
+                value = parser.get(section = actual_section, option = actual_key ).replace('"',"")
+                values.append(value)
+            # casting
+            value = int(value)
+        except configparser.NoSectionError as  e:
+            print(e)
+            print('Missing section error.')
+            value = values[-1].replace('"',"")
+        return value
+    
+    def get_float_value(self,section,key):
+        filepath = self.filepath
+        Sections = [section]
+        Keys = [key]
+        parser = configparser.ConfigParser()
+        try:
+            parser.read(filepath)
+        except:
+            raise Exception('Invalid settings file.')
+        assert type(Sections) == type(Keys) == type([]), 'DataType must be list'
+    
+        values = []
+        len_sections = len(Sections)
+        len_options = len(Keys)
+
+        if len_options == len_sections:
+            pass
+        elif len_sections > len_options:
+            len_sections = len_options
+            print('Data trimmed, different input lenght')
+        elif len_sections < len_options:
+            len_options = len_sections
+            print('Data trimmed, different input lenght')
+        
+        try:
+            for n in range(0,len_sections):
+                actual_section = Sections[n]
+                actual_key = Keys[n]
+                value = parser.get(section = actual_section, option = actual_key ).replace('"',"")
+                values.append(value)
+            # casting
+            value = float(value)
+        except configparser.NoSectionError as  e:
+            print(e)
+            print('Missing section error.')
+            value = values[-1].replace('"',"")
+        return value
         
 class StationSettings(SettingsFile):
     ''' Datastructure for station_settings.ini'''
@@ -102,7 +220,7 @@ class InstrumentSettings(SettingsFile):
         ''' Method to read DMM instrumen section. '''
         
         section = 'DMM'
-        self.DMM.enabled = self.get_value(section, key='enabled')
+        self.DMM.enabled = self.get_bool_value(section, key='enabled')
         self.DMM.instrument_type = self.get_value(section, key='instrument_type')
         self.DMM.address = self.get_value(section, key='address')
     
@@ -119,6 +237,10 @@ class ResistanceTest:
         self.test_active = bool()
         self.low_limit = float()
         self.high_limit = float()
+        self.measurement = float()
+        self.units = str()
+        self.limit_type = str()
+        self.test_time = float()
 
 class TestSettings(SettingsFile):
     ''' Datastructure for test_settings.ini'''
@@ -137,10 +259,12 @@ class TestSettings(SettingsFile):
         ''' Method to read resistance test section. '''
         
         section = 'ResistanceTest'
-        self.ResistanceTest.test_active = bool(self.get_value(section, key='test_active'))
-        self.ResistanceTest.low_limit = float(self.get_value(section, key='low_limit'))
-        self.ResistanceTest.high_limit = float(self.get_value(section, key='high_limit'))
-    
+        self.ResistanceTest.test_active = self.get_bool_value(section, key='test_active')
+        self.ResistanceTest.low_limit = self.get_float_value(section, key='low_limit')
+        self.ResistanceTest.high_limit = self.get_float_value(section, key='high_limit')
+        self.ResistanceTest.units = self.get_value(section, key='units')
+        self.ResistanceTest.limit_type = self.get_value(section, key='limit_type')
+        
     def __str__(self):
         print('\n-- test_settings --')
         ResistanceTest = f'[ResistanceTest]\ntest_active={self.ResistanceTest.test_active}\nlow_limit={self.ResistanceTest.low_limit}\nhigh_limit={self.ResistanceTest.high_limit}\n'
@@ -154,6 +278,48 @@ class Parameters:
         self.StationSettings = SettingsFile(filepath='')
         self.InstrumentSettings = SettingsFile(filepath='')
         self.TestSettings = SettingsFile(filepath='')
+        self.current_serial = None
+        self.TestResults = []
+        self.general_result = str()
     
     def __str__(self):
         return f"Station settings: {self.StationSettings}\nInstrument settings: {self.InstrumentSettings}\nTest settings: {self.TestSettings}"
+    
+class TestResults:
+    def __init__(self, test):
+        self.test = test
+        self.test_name = str()
+        self.low_limit = None
+        self.high_limit = None
+        self.limit_type = str()
+        self.measure = None
+        self.units = str()
+        self.result = str()
+        self.time = float()
+        
+        self.evaluate()
+        
+    def evaluate(self):
+        test = self.test
+        
+        self.test_name = 'ResistanceTest'
+        self.low_limit = test.low_limit
+        self.high_limit = test.high_limit
+        self.limit_type = test.limit_type
+        self.measure = test.measurement
+        self.units = test.units
+        
+        if self.limit_type.upper() == 'LIMIT':
+            in_range = (self.measure >= self.low_limit) and (self.measure <= self.high_limit)
+            self.result = 'PASS' if in_range else 'FAIL'
+        elif self.limit_type.upper() == 'EQUAL':
+            equal = self.measure == self.low_limit
+            self.result = 'PASS' if equal else 'FAIL'
+        else:
+            in_range = (self.measure >= self.low_limit) and (self.measure <= self.high_limit)
+            self.result = 'PASS' if in_range else 'FAIL' 
+        
+        self.time = test.test_time
+    
+    def __str__(self):
+        return f'TestName:{self.test_name} Measure:{self.measure} Time:{self.time} Result:{self.result}'
