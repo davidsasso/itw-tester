@@ -1,3 +1,6 @@
 <RCC>
-  <qresource prefix="resources"/>
+  <qresource prefix="resources">
+    <file>itw.jfif</file>
+    <file>smitech.jfif</file>
+  </qresource>
 </RCC>

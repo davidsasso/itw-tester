@@ -40,5 +40,5 @@ class Serializer:
         self.new_serial = None
     
     def generate(self):
-        serial = 'TEST_SERIAL_DUMMY'
+        serial = 'serial'
         return serial

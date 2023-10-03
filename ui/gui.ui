@@ -610,6 +610,9 @@ QTableWidget::item:selected {
     </property>
    </widget>
    <widget class="QPushButton" name="StopButton">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>810</x>
@@ -637,7 +640,7 @@ QTableWidget::item:selected {
     <property name="geometry">
      <rect>
       <x>50</x>
-      <y>880</y>
+      <y>1010</y>
       <width>91</width>
       <height>20</height>
      </rect>
@@ -661,7 +664,7 @@ QTableWidget::item:selected {
     <property name="geometry">
      <rect>
       <x>50</x>
-      <y>900</y>
+      <y>1030</y>
       <width>51</width>
       <height>20</height>
      </rect>
@@ -682,6 +685,9 @@ QTableWidget::item:selected {
     </property>
    </widget>
    <widget class="QPushButton" name="TestButton">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>820</x>

@@ -44,7 +44,7 @@ class Gdm834x(DMM):
             self.reference = self.rm.open_resource(address)
             id = self.get_id()
         except:
-            raise OpenError('Connection Failed')
+            raise OpenError('Reset DMM')
     
     def __execute_command(func):
         def wrapper(self, *args, **kwargs):

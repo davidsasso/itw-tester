@@ -3,7 +3,7 @@ from PyQt5.QtGui import QPixmap
 from datetime import date, datetime,timedelta
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QApplication, QTableWidgetItem
+from PyQt5.QtWidgets import QApplication, QTableWidgetItem, QMessageBox
 import os
 import sys
 
@@ -48,7 +48,10 @@ class CustomApplication():
         ''' Method for connect all signals from widgets'''
         self.app.ui.StartButton.clicked.connect(self.start)
         self.app.ui.StopButton.clicked.connect(self.stop)
-        self.app.ui.TestButton.clicked.connect(self.test)
+        self.app.ui.TestButton.clicked.connect(self.test_trigger)
+        # Establecer atajo de teclado para el botón (Enter)
+        shortcut = QtWidgets.QShortcut(QtGui.QKeySequence("Return"), self.app)
+        shortcut.activated.connect(self.test_trigger)
     
     def start(self):
         print('Started')
@@ -75,27 +78,30 @@ class CustomApplication():
     
     def run(self):
         continue_testing = self.continue_testing
+        try:
+            self.engine.pre_uut_loop()
+        except:
+            self.showMessageBox('Warning', 'Please Reset Digital Multimeter')
+            self.stop()
         
-        self.engine.pre_uut_loop()
         self.show_user_message('Instruments Ready')
         self.show_user_message('Waiting for unit')
+        self.app.ui.MainMessageLineEdit.setText('PRESS ENTER')
+        self.app.ui.MainMessageLineEdit.setStyleSheet('background-color: white;')
+        self.app.ui.TestButton.setEnabled(True)
+        self.app.ui.StopButton.setEnabled(True)
+        self.app.ui.StartButton.setEnabled(False)
         
         self.timer = QtCore.QTimer()
-        self.timer.timeout.connect(self.test_by_trigger)
+        self.timer.timeout.connect(self.test_trigger)
         self.timer_interval = 3000  # 5000 milliseconds = 5 seconds
         
-        self.timer.start(self.timer_interval)
-        """ while continue_testing:
-            
-            continue_testing = self.engine.pre_uut()
-            if not continue_testing:
-                break
-            else:
-                self.engine.main()
-                self.engine.post_uut()
-        self.engine.post_uut_loop() """
+        #self.timer.start(self.timer_interval)
     
-    def test_by_trigger(self):
+    def idle(self):
+        pass
+    
+    def test_trigger(self):
         self.reset_indicators()
         QApplication.processEvents()
         print('-------------------------------------------------------------------------------------------')
@@ -155,9 +161,13 @@ class CustomApplication():
         table.setRowCount(0)
         QApplication.processEvents()
         
+    def showMessageBox(self, title, message):
+        QMessageBox.information(self.app, title, message, QMessageBox.Ok)
+
     
     def stop(self):
         self.timer.stop()
+        self.app.ui.MainMessageLineEdit.setText('EXIT')
         self.show_user_message('Stopped')
         print('Stopped')
         try:
