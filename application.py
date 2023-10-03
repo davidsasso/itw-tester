@@ -166,9 +166,10 @@ class CustomApplication():
 
     
     def stop(self):
-        self.timer.stop()
+        #self.timer.stop()
         self.app.ui.MainMessageLineEdit.setText('EXIT')
         self.show_user_message('Stopped')
+        QApplication.processEvents()
         print('Stopped')
         try:
             self.engine.post_uut_loop()
