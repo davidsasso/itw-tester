@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1920</width>
-    <height>1017</height>
+    <width>1893</width>
+    <height>934</height>
    </rect>
   </property>
   <property name="mouseTracking">
@@ -33,7 +33,7 @@
     <property name="geometry">
      <rect>
       <x>50</x>
-      <y>40</y>
+      <y>10</y>
       <width>411</width>
       <height>61</height>
      </rect>
@@ -51,8 +51,8 @@
     </property>
     <property name="geometry">
      <rect>
-      <x>510</x>
-      <y>40</y>
+      <x>240</x>
+      <y>10</y>
       <width>951</width>
       <height>71</height>
      </rect>
@@ -95,9 +95,9 @@
     <property name="geometry">
      <rect>
       <x>50</x>
-      <y>480</y>
+      <y>310</y>
       <width>891</width>
-      <height>351</height>
+      <height>121</height>
      </rect>
     </property>
     <property name="font">
@@ -349,35 +349,11 @@ QTableWidget::item:selected {
      </property>
     </column>
    </widget>
-   <widget class="QPushButton" name="StartButton">
-    <property name="geometry">
-     <rect>
-      <x>1660</x>
-      <y>50</y>
-      <width>161</width>
-      <height>71</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Arial</family>
-      <pointsize>12</pointsize>
-      <weight>75</weight>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">color: #0b0b0b;</string>
-    </property>
-    <property name="text">
-     <string>Start Test</string>
-    </property>
-   </widget>
    <widget class="QLabel" name="TopLineLabel">
     <property name="geometry">
      <rect>
       <x>50</x>
-      <y>170</y>
+      <y>140</y>
       <width>1801</width>
       <height>1</height>
      </rect>
@@ -394,7 +370,7 @@ QTableWidget::item:selected {
     <property name="geometry">
      <rect>
       <x>50</x>
-      <y>360</y>
+      <y>190</y>
       <width>751</width>
       <height>51</height>
      </rect>
@@ -424,7 +400,7 @@ QTableWidget::item:selected {
     <property name="geometry">
      <rect>
       <x>50</x>
-      <y>230</y>
+      <y>915</y>
       <width>891</width>
       <height>61</height>
      </rect>
@@ -460,7 +436,7 @@ QTableWidget::item:selected {
     <property name="geometry">
      <rect>
       <x>50</x>
-      <y>330</y>
+      <y>160</y>
       <width>241</width>
       <height>16</height>
      </rect>
@@ -484,7 +460,7 @@ QTableWidget::item:selected {
     <property name="geometry">
      <rect>
       <x>50</x>
-      <y>195</y>
+      <y>880</y>
       <width>151</width>
       <height>21</height>
      </rect>
@@ -508,7 +484,7 @@ QTableWidget::item:selected {
     <property name="geometry">
      <rect>
       <x>60</x>
-      <y>120</y>
+      <y>90</y>
       <width>561</width>
       <height>41</height>
      </rect>
@@ -531,8 +507,8 @@ QTableWidget::item:selected {
    <widget class="QLabel" name="UserMessageLabel">
     <property name="geometry">
      <rect>
-      <x>650</x>
-      <y>120</y>
+      <x>370</x>
+      <y>90</y>
       <width>691</width>
       <height>41</height>
      </rect>
@@ -559,7 +535,7 @@ QTableWidget::item:selected {
     <property name="geometry">
      <rect>
       <x>500</x>
-      <y>880</y>
+      <y>520</y>
       <width>111</width>
       <height>41</height>
      </rect>
@@ -589,7 +565,7 @@ QTableWidget::item:selected {
     <property name="geometry">
      <rect>
       <x>310</x>
-      <y>880</y>
+      <y>520</y>
       <width>181</width>
       <height>41</height>
      </rect>
@@ -607,33 +583,6 @@ QTableWidget::item:selected {
     </property>
     <property name="text">
      <string>Total Test Time:</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="StopButton">
-    <property name="enabled">
-     <bool>false</bool>
-    </property>
-    <property name="geometry">
-     <rect>
-      <x>810</x>
-      <y>880</y>
-      <width>131</width>
-      <height>51</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Arial</family>
-      <pointsize>12</pointsize>
-      <weight>75</weight>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">color: #0b0b0b;</string>
-    </property>
-    <property name="text">
-     <string>Stop</string>
     </property>
    </widget>
    <widget class="QLabel" name="IPAddressLabel">
@@ -691,7 +640,7 @@ QTableWidget::item:selected {
     <property name="geometry">
      <rect>
       <x>820</x>
-      <y>360</y>
+      <y>190</y>
       <width>121</width>
       <height>51</height>
      </rect>
@@ -715,7 +664,7 @@ QTableWidget::item:selected {
     <property name="geometry">
      <rect>
       <x>50</x>
-      <y>450</y>
+      <y>280</y>
       <width>241</width>
       <height>16</height>
      </rect>
@@ -739,7 +688,7 @@ QTableWidget::item:selected {
     <property name="geometry">
      <rect>
       <x>970</x>
-      <y>190</y>
+      <y>180</y>
       <width>921</width>
       <height>761</height>
      </rect>
@@ -857,7 +806,7 @@ QTableWidget::item:selected {
     <property name="geometry">
      <rect>
       <x>50</x>
-      <y>860</y>
+      <y>500</y>
       <width>890</width>
       <height>1</height>
      </rect>
@@ -869,11 +818,61 @@ QTableWidget::item:selected {
      <string/>
     </property>
    </widget>
+   <widget class="QPushButton" name="StartButton">
+    <property name="geometry">
+     <rect>
+      <x>60</x>
+      <y>10</y>
+      <width>161</width>
+      <height>71</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Arial</family>
+      <pointsize>12</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: #0b0b0b;</string>
+    </property>
+    <property name="text">
+     <string>Start Test</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="StopButton">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>810</x>
+      <y>510</y>
+      <width>131</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Arial</family>
+      <pointsize>12</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: #0b0b0b;</string>
+    </property>
+    <property name="text">
+     <string>Stop</string>
+    </property>
+   </widget>
    <zorder>stackedWidget</zorder>
    <zorder>LogoLabel</zorder>
    <zorder>MainMessageLineEdit</zorder>
    <zorder>TestResultsTable</zorder>
-   <zorder>StartButton</zorder>
    <zorder>TopLineLabel</zorder>
    <zorder>SerialLineEdit</zorder>
    <zorder>ProductInformationLineEdit</zorder>
@@ -883,19 +882,20 @@ QTableWidget::item:selected {
    <zorder>UserMessageLabel</zorder>
    <zorder>TotalTestTimeLineEdit</zorder>
    <zorder>TotalTestTimeLabel</zorder>
-   <zorder>StopButton</zorder>
    <zorder>IPAddressLabel</zorder>
    <zorder>StepLabel</zorder>
    <zorder>TestButton</zorder>
    <zorder>SerialNumberLabel_2</zorder>
    <zorder>TopLineLabel_3</zorder>
+   <zorder>StartButton</zorder>
+   <zorder>StopButton</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1920</width>
+     <width>1893</width>
      <height>26</height>
     </rect>
    </property>
