@@ -1,4 +1,5 @@
 import os
+import sys
 
 from .utilities.datatypes import Parameters
 from .utilities.datatypes import StationSettings, InstrumentSettings, TestSettings
@@ -35,9 +36,17 @@ class ReadConfigurationFiles(AbstractSequence):
     def main(self):
         # Define settings paths
         current_dir = os.path.dirname(os.path.abspath(__file__))
-        station_settings_path = os.path.join(current_dir, 'settings\\station_settings.ini')
-        instrument_settings_path = os.path.join(current_dir, 'settings\\instrument_settings.ini')
-        test_settings_path = os.path.join(current_dir, 'settings\\test_settings.ini')
+        
+        if getattr(sys, 'frozen', False):
+            # Running as compiled executable
+            settings_folder = os.path.join(sys._MEIPASS, 'engine', 'settings')
+        else:
+            # Running from source code
+            settings_folder = os.path.join(current_dir, 'settings')
+        
+        station_settings_path = os.path.join(current_dir, f'{settings_folder}\\station_settings.ini')
+        instrument_settings_path = os.path.join(current_dir, f'{settings_folder}\\instrument_settings.ini')
+        test_settings_path = os.path.join(current_dir, f'{settings_folder}\\test_settings.ini')
         
         # Load Parameters
         self.parameters.StationSettings = StationSettings(filepath=station_settings_path)
@@ -85,7 +94,7 @@ class ConfigureInstrumentsSequence(AbstractSequence):
             operation_mode = dmm.handle.RESISTANCE_MODE
             operation_range = dmm.handle.RANGE_500
             dmm.handle.configure(mode=operation_mode, range=operation_range)
-            print(f'-\tDMM configured\nmode:{operation_mode}\nrange:{operation_range}')
+            print(f'-\tDMM configured\nMode:{operation_mode}\nRange:{operation_range}')
         #TBD
         
         return super().main()

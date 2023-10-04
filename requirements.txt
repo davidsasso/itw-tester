@@ -1,5 +1,15 @@
+altgraph==0.17.4
+importlib-metadata==6.8.0
+packaging==23.2
+pefile==2023.2.7
+pyinstaller==6.0.0
+pyinstaller-hooks-contrib==2023.9
 PyQt5==5.15.7
 PyQt5-Qt5==5.15.2
 PyQt5-sip==12.11.0
 PyQt5Designer==5.14.1
 pyuic5-tool==0.0.1
+PyVISA==1.13.0
+pywin32-ctypes==0.2.2
+typing_extensions==4.8.0
+zipp==3.17.0
