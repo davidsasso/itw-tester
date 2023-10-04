@@ -913,12 +913,18 @@ QTableWidget::item:selected {
     <property name="title">
      <string>Maintenance</string>
     </property>
+    <addaction name="actionDevicesList"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuView"/>
    <addaction name="menuMaintenance"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionDevicesList">
+   <property name="text">
+    <string>Devices List</string>
+   </property>
+  </action>
  </widget>
  <resources>
   <include location="../resources/resources.qrc"/>

@@ -6,7 +6,7 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QApplication, QTableWidgetItem, QMessageBox
 import os
 import sys
-
+import pyvisa
 
 # Custom Imports
 #from ui.main_window import Ui_MainWindow
@@ -52,6 +52,7 @@ class CustomApplication():
         # Establecer atajo de teclado para el botón (Enter)
         shortcut = QtWidgets.QShortcut(QtGui.QKeySequence("Return"), self.app)
         shortcut.activated.connect(self.test_trigger)
+        self.app.ui.actionDevicesList.triggered.connect(self.show_devices_list)
     
     def start(self):
         print('Started')
@@ -164,6 +165,13 @@ class CustomApplication():
     def showMessageBox(self, title, message):
         QMessageBox.information(self.app, title, message, QMessageBox.Ok)
 
+    def show_devices_list(self):
+        rm = pyvisa.ResourceManager()
+        devices = rm.list_resources()
+        rm.close()
+
+        device_list_text = "\n".join(devices)
+        QMessageBox.information(self.app, 'Available Devices', device_list_text)
     
     def stop(self):
         #self.timer.stop()
