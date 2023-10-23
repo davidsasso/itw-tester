@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1366</width>
-    <height>768</height>
+    <width>1893</width>
+    <height>934</height>
    </rect>
   </property>
   <property name="mouseTracking">
@@ -32,17 +32,14 @@
    <widget class="QLabel" name="LogoLabel">
     <property name="geometry">
      <rect>
-      <x>20</x>
+      <x>50</x>
       <y>10</y>
-      <width>191</width>
-      <height>51</height>
+      <width>411</width>
+      <height>61</height>
      </rect>
     </property>
     <property name="text">
      <string/>
-    </property>
-    <property name="pixmap">
-     <pixmap resource="../resources/resources.qrc">:/resources/itw.jfif</pixmap>
     </property>
     <property name="scaledContents">
      <bool>true</bool>
@@ -54,8 +51,8 @@
     </property>
     <property name="geometry">
      <rect>
-      <x>220</x>
-      <y>0</y>
+      <x>240</x>
+      <y>10</y>
       <width>951</width>
       <height>71</height>
      </rect>
@@ -97,10 +94,10 @@
    <widget class="QTableWidget" name="TestResultsTable">
     <property name="geometry">
      <rect>
-      <x>10</x>
-      <y>280</y>
-      <width>751</width>
-      <height>291</height>
+      <x>50</x>
+      <y>310</y>
+      <width>891</width>
+      <height>121</height>
      </rect>
     </property>
     <property name="font">
@@ -173,9 +170,6 @@ QTableWidget::item:selected {
     </property>
     <attribute name="horizontalHeaderCascadingSectionResizes">
      <bool>false</bool>
-    </attribute>
-    <attribute name="horizontalHeaderHighlightSections">
-     <bool>true</bool>
     </attribute>
     <attribute name="horizontalHeaderStretchLastSection">
      <bool>true</bool>
@@ -358,9 +352,9 @@ QTableWidget::item:selected {
    <widget class="QLabel" name="TopLineLabel">
     <property name="geometry">
      <rect>
-      <x>10</x>
+      <x>50</x>
       <y>140</y>
-      <width>1311</width>
+      <width>1801</width>
       <height>1</height>
      </rect>
     </property>
@@ -375,9 +369,9 @@ QTableWidget::item:selected {
    <widget class="QLineEdit" name="SerialLineEdit">
     <property name="geometry">
      <rect>
-      <x>10</x>
+      <x>50</x>
       <y>190</y>
-      <width>601</width>
+      <width>751</width>
       <height>51</height>
      </rect>
     </property>
@@ -441,7 +435,7 @@ QTableWidget::item:selected {
    <widget class="QLabel" name="SerialNumberLabel">
     <property name="geometry">
      <rect>
-      <x>10</x>
+      <x>50</x>
       <y>160</y>
       <width>241</width>
       <height>16</height>
@@ -489,9 +483,9 @@ QTableWidget::item:selected {
    <widget class="QLabel" name="StationNameLabel">
     <property name="geometry">
      <rect>
-      <x>10</x>
-      <y>80</y>
-      <width>331</width>
+      <x>60</x>
+      <y>90</y>
+      <width>561</width>
       <height>41</height>
      </rect>
     </property>
@@ -510,11 +504,38 @@ QTableWidget::item:selected {
      <string>CELL-1</string>
     </property>
    </widget>
+   <widget class="QLabel" name="UserMessageLabel">
+    <property name="geometry">
+     <rect>
+      <x>370</x>
+      <y>90</y>
+      <width>691</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Arial</family>
+      <pointsize>24</pointsize>
+      <weight>50</weight>
+      <bold>false</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: red;</string>
+    </property>
+    <property name="text">
+     <string>Test Solution</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
    <widget class="QLineEdit" name="TotalTestTimeLineEdit">
     <property name="geometry">
      <rect>
-      <x>390</x>
-      <y>640</y>
+      <x>500</x>
+      <y>520</y>
       <width>111</width>
       <height>41</height>
      </rect>
@@ -543,8 +564,8 @@ QTableWidget::item:selected {
    <widget class="QLabel" name="TotalTestTimeLabel">
     <property name="geometry">
      <rect>
-      <x>200</x>
-      <y>640</y>
+      <x>310</x>
+      <y>520</y>
       <width>181</width>
       <height>41</height>
      </rect>
@@ -618,7 +639,7 @@ QTableWidget::item:selected {
     </property>
     <property name="geometry">
      <rect>
-      <x>640</x>
+      <x>820</x>
       <y>190</y>
       <width>121</width>
       <height>51</height>
@@ -642,8 +663,8 @@ QTableWidget::item:selected {
    <widget class="QLabel" name="SerialNumberLabel_2">
     <property name="geometry">
      <rect>
-      <x>10</x>
-      <y>250</y>
+      <x>50</x>
+      <y>280</y>
       <width>241</width>
       <height>16</height>
      </rect>
@@ -666,10 +687,10 @@ QTableWidget::item:selected {
    <widget class="QStackedWidget" name="stackedWidget">
     <property name="geometry">
      <rect>
-      <x>780</x>
-      <y>160</y>
-      <width>561</width>
-      <height>611</height>
+      <x>970</x>
+      <y>180</y>
+      <width>921</width>
+      <height>761</height>
      </rect>
     </property>
     <property name="currentIndex">
@@ -679,10 +700,10 @@ QTableWidget::item:selected {
      <widget class="QWidget" name="verticalLayoutWidget">
       <property name="geometry">
        <rect>
-        <x>20</x>
-        <y>350</y>
-        <width>411</width>
-        <height>181</height>
+        <x>30</x>
+        <y>490</y>
+        <width>841</width>
+        <height>271</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="UnitsTestedByHourLayout"/>
@@ -690,8 +711,8 @@ QTableWidget::item:selected {
      <widget class="QLabel" name="ValueYieldLabel">
       <property name="geometry">
        <rect>
-        <x>40</x>
-        <y>50</y>
+        <x>60</x>
+        <y>60</y>
         <width>171</width>
         <height>71</height>
        </rect>
@@ -717,8 +738,8 @@ QTableWidget::item:selected {
      <widget class="QLabel" name="YieldLabel">
       <property name="geometry">
        <rect>
-        <x>90</x>
-        <y>0</y>
+        <x>120</x>
+        <y>20</y>
         <width>71</width>
         <height>31</height>
        </rect>
@@ -741,8 +762,8 @@ QTableWidget::item:selected {
      <widget class="QLabel" name="UnitsTestedByHourLabel">
       <property name="geometry">
        <rect>
-        <x>20</x>
-        <y>310</y>
+        <x>30</x>
+        <y>450</y>
         <width>251</width>
         <height>31</height>
        </rect>
@@ -766,8 +787,8 @@ QTableWidget::item:selected {
       <property name="geometry">
        <rect>
         <x>20</x>
-        <y>300</y>
-        <width>531</width>
+        <y>430</y>
+        <width>871</width>
         <height>1</height>
        </rect>
       </property>
@@ -784,9 +805,9 @@ QTableWidget::item:selected {
    <widget class="QLabel" name="TopLineLabel_3">
     <property name="geometry">
      <rect>
-      <x>9</x>
-      <y>590</y>
-      <width>751</width>
+      <x>50</x>
+      <y>500</y>
+      <width>890</width>
       <height>1</height>
      </rect>
     </property>
@@ -800,8 +821,8 @@ QTableWidget::item:selected {
    <widget class="QPushButton" name="StartButton">
     <property name="geometry">
      <rect>
-      <x>1180</x>
-      <y>0</y>
+      <x>60</x>
+      <y>10</y>
       <width>161</width>
       <height>71</height>
      </rect>
@@ -827,8 +848,8 @@ QTableWidget::item:selected {
     </property>
     <property name="geometry">
      <rect>
-      <x>570</x>
-      <y>630</y>
+      <x>810</x>
+      <y>510</y>
       <width>131</width>
       <height>51</height>
      </rect>
@@ -848,57 +869,8 @@ QTableWidget::item:selected {
      <string>Stop</string>
     </property>
    </widget>
-   <widget class="QLabel" name="UserMessageLabel">
-    <property name="geometry">
-     <rect>
-      <x>350</x>
-      <y>90</y>
-      <width>691</width>
-      <height>41</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Arial</family>
-      <pointsize>24</pointsize>
-      <weight>50</weight>
-      <bold>false</bold>
-     </font>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">color: red;</string>
-    </property>
-    <property name="text">
-     <string>Test Solution</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignCenter</set>
-    </property>
-   </widget>
-   <widget class="QLabel" name="LogoLabel_2">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>580</y>
-      <width>141</width>
-      <height>141</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-    <property name="pixmap">
-     <pixmap resource="../resources/resources.qrc">:/resources/smitech.jfif</pixmap>
-    </property>
-    <property name="scaledContents">
-     <bool>true</bool>
-    </property>
-    <property name="margin">
-     <number>-20</number>
-    </property>
-   </widget>
-   <zorder>LogoLabel_2</zorder>
    <zorder>stackedWidget</zorder>
+   <zorder>LogoLabel</zorder>
    <zorder>MainMessageLineEdit</zorder>
    <zorder>TestResultsTable</zorder>
    <zorder>TopLineLabel</zorder>
@@ -907,6 +879,7 @@ QTableWidget::item:selected {
    <zorder>SerialNumberLabel</zorder>
    <zorder>ProductInformationLabel</zorder>
    <zorder>StationNameLabel</zorder>
+   <zorder>UserMessageLabel</zorder>
    <zorder>TotalTestTimeLineEdit</zorder>
    <zorder>TotalTestTimeLabel</zorder>
    <zorder>IPAddressLabel</zorder>
@@ -916,15 +889,13 @@ QTableWidget::item:selected {
    <zorder>TopLineLabel_3</zorder>
    <zorder>StartButton</zorder>
    <zorder>StopButton</zorder>
-   <zorder>UserMessageLabel</zorder>
-   <zorder>LogoLabel</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1366</width>
+     <width>1893</width>
      <height>26</height>
     </rect>
    </property>

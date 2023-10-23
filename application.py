@@ -42,6 +42,7 @@ class CustomApplication():
         self.Model = None
         self.continue_testing = True
         self.connect_signals()
+        self.initialize()
         self.app.show()
 
     def connect_signals(self):
@@ -53,6 +54,21 @@ class CustomApplication():
         shortcut = QtWidgets.QShortcut(QtGui.QKeySequence("Return"), self.app)
         shortcut.activated.connect(self.test_trigger)
         self.app.ui.actionDevicesList.triggered.connect(self.show_devices_list)
+    
+    def initialize(self):
+        self.initialize_table()
+        
+    def initialize_table(self):
+        table = self.app.ui.TestResultsTable
+        table.setColumnWidth(0, 100)
+        table.setColumnWidth(1, 100)
+        table.setColumnWidth(2, 100)
+        table.setColumnWidth(3, 100)
+        table.setColumnWidth(4, 100)
+        table.setColumnWidth(5, 100)
+        table.setColumnWidth(6, 100)
+        QApplication.processEvents()
+        
     
     def start(self):
         print('Started')
