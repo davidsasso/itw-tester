@@ -196,6 +196,12 @@ class ReportResultsSequence(AbstractSequence):
         #self.parameters.TestResults.clear()
         return super().main()
 
+class PrintLabel(AbstractSequence):
+    
+    def main(self):
+            #TODO print label using current data
+            #self.parameters.TestResults.clear()
+            return super().main()
 
 # [PostUUTLoop Sequences]
 
