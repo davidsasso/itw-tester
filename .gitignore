@@ -1,3 +1,4 @@
 # Ignora todos los archivos de cache de python
 *.pyc
+*.code-workspace
 /engine/settings/data/zpl_file.txt
