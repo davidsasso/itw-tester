@@ -128,7 +128,7 @@ if __name__ == '__main__':
     printer = ZD411()
     printer.open(address)
     template = 'C:\ITW\itw-tester\engine\settings\data\zpl_template.txt'
-    parameters = ['30', '0', '0', 'DECALCAV20456202304271838', 'DECALCAV20456202304271838']
+    parameters = ['30', '0', '0', 'PUTO EL QUE LO LEA', 'DO NOT SCAN']
     label = 'C:\ITW\itw-tester\engine\settings\data\zpl_file.txt'
     #printer.generate_label(template, parameters, label)
     printer.print_shot(template, parameters, label)

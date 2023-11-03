@@ -211,6 +211,8 @@ class Printer:
         self.address = str()
         self.zpl_template = str()
         self.zpl_file = str()
+        self.zpl_absolute_template = str()
+        self.zpl_absolute_file = str()
 
 class InstrumentSettings(SettingsFile):
     ''' Datastructure for instrument_settings.ini'''

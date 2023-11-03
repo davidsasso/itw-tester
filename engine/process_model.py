@@ -15,6 +15,8 @@ from .sequences import CreateTestResultsSequence
 from .sequences import ReportResultsSequence
 from .sequences import CloseInstrumentsSequence
 from.sequences import PrintLabelSequence
+from .sequences import SaveResultsSequence
+from .sequences import DefineCustomParametersSequence
 
 from .utilities.custom_exceptions import exceptions_handler_preuutloop
 from .utilities.custom_exceptions import exceptions_handler_preuut
@@ -59,6 +61,10 @@ class ITWProcessModel(AbstractProcessModel):
         super().pre_uut_loop()
         
         Sequence = ReadConfigurationFiles(parameters=self.parameters)
+        self.parameters = Sequence.parameters
+        del Sequence
+        
+        Sequence = DefineCustomParametersSequence(parameters=self.parameters)
         self.parameters = Sequence.parameters
         del Sequence
         
@@ -108,6 +114,10 @@ class ITWProcessModel(AbstractProcessModel):
         super().post_uut()
         
         Sequence = CreateTestResultsSequence(parameters=self.parameters)
+        self.parameters = Sequence.parameters
+        del Sequence
+        
+        Sequence = SaveResultsSequence(parameters=self.parameters)
         self.parameters = Sequence.parameters
         del Sequence
         

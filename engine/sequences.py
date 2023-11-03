@@ -6,6 +6,7 @@ from .utilities.datatypes import StationSettings, InstrumentSettings, TestSettin
 from .utilities.datatypes import TestResults
 from .libraries.DMM.DMM import DMM, Gdm834x
 from .libraries.Printer.Printer import Printer, ZD411
+from .utilities import utilities as utils
 
 from .utilities.utilities import Timer, Serializer
 class AbstractSequence:
@@ -53,6 +54,27 @@ class ReadConfigurationFiles(AbstractSequence):
         self.parameters.StationSettings = StationSettings(filepath=station_settings_path)
         self.parameters.InstrumentSettings = InstrumentSettings(filepath=instrument_settings_path)
         self.parameters.TestSettings = TestSettings(filepath=test_settings_path)
+        
+        return super().main()
+
+class DefineCustomParametersSequence(AbstractSequence):
+    
+    def main(self):
+        # Define settings paths
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        
+        if getattr(sys, 'frozen', False):
+            # Running as compiled executable
+            settings_folder = os.path.join(sys._MEIPASS, 'engine', 'settings')
+        else:
+            # Running from source code
+            settings_folder = os.path.join(current_dir, 'settings')
+        print('Settings:')
+        print(settings_folder)
+        # Printer
+        printer = self.parameters.InstrumentSettings.Printer
+        printer.zpl_absolute_template = f'{settings_folder}\\{printer.zpl_template}'
+        printer.zpl_absolute_file = f'{settings_folder}\\{printer.zpl_file}'
         
         return super().main()
 
@@ -206,6 +228,22 @@ class CreateTestResultsSequence(AbstractSequence):
         self.parameters.general_result = general_result
         return super().main()
 
+class SaveResultsSequence(AbstractSequence):
+    
+    def main(self):
+        """Save serial and general result into a textfile for traceability"""
+        try:
+            ITW_PATH = 'C:\ITW'
+            serial = self.parameters.current_serial
+            general_result = self.parameters.general_result
+            line = f"{serial},{general_result}"
+            history_filepath = utils.create_text_file(ITW_PATH)
+            utils.append_line_to_text_file(path=history_filepath, line=line)
+            print("Added result to History textfile")
+        except:
+            print('No se pudo guardar nada en el archivo de texto')
+        return super().main()
+
 class ReportResultsSequence(AbstractSequence):
     
     def main(self):
@@ -221,9 +259,13 @@ class PrintLabelSequence(AbstractSequence):
         printer = self.parameters.InstrumentSettings.Printer
         if printer.enabled:
             passed = self.parameters.general_result == "PASS"
-            template = 'C:\ITW\itw-tester\engine\settings\data\zpl_template.txt'
-            parameters = ['30', '0', '0', 'serial', 'serial']
-            label = 'C:\ITW\itw-tester\engine\settings\data\zpl_file.txt'
+            
+            template = self.parameters.InstrumentSettings.Printer.zpl_absolute_template  #C:\ITW\itw-tester\engine\settings\data\zpl_template.txt'
+            label = self.parameters.InstrumentSettings.Printer.zpl_absolute_file         #'C:\ITW\itw-tester\engine\settings\data\zpl_file.txt'
+            current_serial = self.parameters.current_serial
+            
+            parameters = ['30', '0', '0', current_serial, current_serial]
+            
             if passed:
                 printer.handle.print_shot(template, parameters, label)
         #TBD
