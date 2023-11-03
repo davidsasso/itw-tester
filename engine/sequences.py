@@ -5,6 +5,7 @@ from .utilities.datatypes import Parameters
 from .utilities.datatypes import StationSettings, InstrumentSettings, TestSettings
 from .utilities.datatypes import TestResults
 from .libraries.DMM.DMM import DMM, Gdm834x
+from .libraries.Printer.Printer import Printer, ZD411
 
 from .utilities.utilities import Timer, Serializer
 class AbstractSequence:
@@ -60,10 +61,17 @@ class CreateInstrumentsSequence(AbstractSequence):
     def main(self):
         
         # DMM
-        if self.parameters.InstrumentSettings.DMM.enabled:
-            inst_type = self.parameters.InstrumentSettings.DMM.instrument_type
-            self.parameters.InstrumentSettings.DMM.handle = Gdm834x()
-            print(f'-\tDMM type is: {self.parameters.InstrumentSettings.DMM.handle}')
+        dmm = self.parameters.InstrumentSettings.DMM
+        if dmm.enabled:
+            inst_type = dmm.instrument_type
+            dmm.handle = Gdm834x()
+            print(f'-\tDMM type is: {dmm.handle}')
+        
+        # Printer
+        printer = self.parameters.InstrumentSettings.Printer
+        if printer.enabled:
+            printer.handle = ZD411()
+            print(f'-\tPrinter type is: {printer.handle}')
         
         #TBD
         
@@ -79,7 +87,15 @@ class InitializeInstrumentsSequence(AbstractSequence):
             address = dmm.address
             dmm.handle.open(address=address)
             print('-\tDMM opened.')
-        
+        try:  
+            # Printer
+            printer = self.parameters.InstrumentSettings.Printer
+            if printer.enabled:
+                address = printer.address
+                print(address)
+                printer.handle.open(address=address)
+        except Exception as e:
+            raise e
         #TBD
         
         return super().main()
@@ -143,8 +159,9 @@ class ResistanceTestSequence(AbstractSequence):
     def main(self):
         
         tests = self.parameters.TestSettings
+        dmm = self.parameters.InstrumentSettings.DMM
         
-        if tests.ResistanceTest.test_active:
+        if tests.ResistanceTest.test_active and dmm.enabled:
             #TODO measure time
             test_timer = Timer()
             test_timer.reset()
@@ -196,10 +213,20 @@ class ReportResultsSequence(AbstractSequence):
         #self.parameters.TestResults.clear()
         return super().main()
 
-class PrintLabel(AbstractSequence):
+class PrintLabelSequence(AbstractSequence):
     
     def main(self):
-            #TODO print label using current data
+        
+        # Printer
+        printer = self.parameters.InstrumentSettings.Printer
+        if printer.enabled:
+            passed = self.parameters.general_result == "PASS"
+            template = 'C:\ITW\itw-tester\engine\settings\data\zpl_template.txt'
+            parameters = ['30', '0', '0', 'serial', 'serial']
+            label = 'C:\ITW\itw-tester\engine\settings\data\zpl_file.txt'
+            if passed:
+                printer.handle.print_shot(template, parameters, label)
+        #TBD
             #self.parameters.TestResults.clear()
             return super().main()
 

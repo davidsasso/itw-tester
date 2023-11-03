@@ -41,5 +41,5 @@ class Serializer:
     
     def generate(self):
         serial = 'serial'
-        serial = ''
+        #serial = ''
         return serial

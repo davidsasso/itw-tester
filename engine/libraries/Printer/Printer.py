@@ -52,7 +52,7 @@ class ZD411(Printer):
         device_manager = DeviceManager()
         device_manager.root.rescan()
         devices = device_manager.all_devices
-        connected = any(device.description == address for device in devices)
+        connected = any(device.description == self.address for device in devices)
         return connected
           
     def configure(self, template_filepath: str, intensity: int, home_x: int, home_y: int):

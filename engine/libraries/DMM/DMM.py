@@ -146,5 +146,8 @@ class Gdm834x(DMM):
     
     
     def close(self):
-        self.reference.close()
-        self.rm.close()
+        try:
+            self.reference.close()
+            self.rm.close()
+        except:
+            pass

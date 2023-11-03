@@ -69,7 +69,6 @@ class CustomApplication():
         table.setColumnWidth(6, 100)
         QApplication.processEvents()
         
-    
     def start(self):
         print('Started')
         #TODO pass model from settings
