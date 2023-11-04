@@ -6,7 +6,6 @@
 import serial
 import subprocess
 import os
-import winreg
 from infi.devicemanager import DeviceManager
 from zebra import Zebra
 try:
