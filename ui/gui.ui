@@ -897,7 +897,6 @@ QTableWidget::item:selected {
      <number>-20</number>
     </property>
    </widget>
-   <zorder>LogoLabel_2</zorder>
    <zorder>stackedWidget</zorder>
    <zorder>MainMessageLineEdit</zorder>
    <zorder>TestResultsTable</zorder>
@@ -913,11 +912,12 @@ QTableWidget::item:selected {
    <zorder>StepLabel</zorder>
    <zorder>TestButton</zorder>
    <zorder>SerialNumberLabel_2</zorder>
-   <zorder>TopLineLabel_3</zorder>
    <zorder>StartButton</zorder>
    <zorder>StopButton</zorder>
    <zorder>UserMessageLabel</zorder>
    <zorder>LogoLabel</zorder>
+   <zorder>LogoLabel_2</zorder>
+   <zorder>TopLineLabel_3</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
