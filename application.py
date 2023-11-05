@@ -62,13 +62,13 @@ class CustomApplication():
         
     def initialize_table(self):
         table = self.app.ui.TestResultsTable
-        table.setColumnWidth(0, 100)
-        table.setColumnWidth(1, 100)
-        table.setColumnWidth(2, 100)
-        table.setColumnWidth(3, 100)
-        table.setColumnWidth(4, 100)
-        table.setColumnWidth(5, 100)
-        table.setColumnWidth(6, 100)
+        table.setColumnWidth(0, 150)
+        table.setColumnWidth(1, 90)
+        table.setColumnWidth(2, 90)
+        table.setColumnWidth(3, 90)
+        table.setColumnWidth(4, 90)
+        table.setColumnWidth(5, 90)
+        table.setColumnWidth(6, 90)
         QApplication.processEvents()
         
     def start(self):
@@ -174,14 +174,15 @@ class CustomApplication():
         font = QtGui.QFont("Arial", 10)
         table.setFont(font)
         table.setRowCount(len(test_results_list))
+        
         for row, test_result in enumerate(test_results_list):
-            table.setItem(row, 0, QTableWidgetItem(test_result.test_name))
-            table.setItem(row, 1, QTableWidgetItem(str(test_result.low_limit)))
-            table.setItem(row, 2, QTableWidgetItem(str(test_result.high_limit)))
-            table.setItem(row, 3, QTableWidgetItem(str(test_result.measure)))
-            table.setItem(row, 4, QTableWidgetItem(test_result.units))
-            table.setItem(row, 5, QTableWidgetItem(test_result.result))
-            table.setItem(row, 6, QTableWidgetItem(str(test_result.time)))
+            for col, value in enumerate([test_result.test_name, str(test_result.low_limit),
+                                        str(test_result.high_limit), str(test_result.measure),
+                                        test_result.units, test_result.result, str(test_result.time)]):
+                item = QTableWidgetItem(value)
+                item.setTextAlignment(Qt.AlignCenter)  # Center-align the text
+                table.setItem(row, col, item)
+        
         QApplication.processEvents()
     
     def reset_indicators(self):
