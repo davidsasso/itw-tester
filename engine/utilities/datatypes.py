@@ -202,6 +202,17 @@ class DMM:
         self.enabled = bool()
         self.instrument_type = str()
         self.address = str()
+        
+class Printer:
+    def __init__(self):
+        self.handle = None
+        self.enabled = bool()
+        self.instrument_type = str()
+        self.address = str()
+        self.zpl_template = str()
+        self.zpl_file = str()
+        self.zpl_absolute_template = str()
+        self.zpl_absolute_file = str()
 
 class InstrumentSettings(SettingsFile):
     ''' Datastructure for instrument_settings.ini'''
@@ -209,25 +220,38 @@ class InstrumentSettings(SettingsFile):
     def __init__(self, filepath):
         self.filepath = filepath
         self.DMM = DMM()
+        self.Printer = Printer()
         
         self.read_all()
     
     def read_all(self):
         ''' Read all sections. '''
         self.read_dmm()
+        self.read_printer()
 
     def read_dmm(self):
-        ''' Method to read DMM instrumen section. '''
+        ''' Method to read DMM instrument section. '''
         
         section = 'DMM'
         self.DMM.enabled = self.get_bool_value(section, key='enabled')
         self.DMM.instrument_type = self.get_value(section, key='instrument_type')
         self.DMM.address = self.get_value(section, key='address')
+  
+    def read_printer(self):
+        ''' Method to read Printer instrument section. '''
+        
+        section = 'Printer'
+        self.Printer.enabled = self.get_bool_value(section, key='enabled')
+        self.Printer.instrument_type = self.get_value(section, key='instrument_type')
+        self.Printer.address = self.get_value(section, key='address')
+        self.Printer.zpl_template = self.get_value(section, key='zpl_template')
+        self.Printer.zpl_file = self.get_value(section, key='zpl_file')
     
     def __str__(self):
         print('\n-- instrument_settings --')
         DMM = f'[DMM]\nenabled={self.DMM.enabled}\ninstrument_type={self.DMM.instrument_type}\naddress={self.DMM.address}\n'
-        return_string = DMM
+        Printer = f'[Printer]\nenabled={self.Printer.enabled}\ninstrument_type={self.Printer.instrument_type}\naddress={self.Printer.address}\nzpl_template={self.Printer.zpl_template}\nzpl_file={self.Printer.zpl_file}\n'
+        return_string = DMM + Printer
         return return_string
 
 # test_settings.ini configuration file data structures

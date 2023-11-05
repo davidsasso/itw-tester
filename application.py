@@ -14,6 +14,8 @@ from ui.gui import Ui_MainWindow
 from engine.datatypes.local_settings import StationSettings
 from engine.engine import Engine
 from engine.process_model import ITWProcessModel
+from engine.libraries.DMM import exceptions as DMMExceptions
+from engine.libraries.Printer import exceptions as PrinterExceptions
 
 class Application(QtWidgets.QMainWindow):
     """ Main Application parser for Custom Application """
@@ -42,6 +44,7 @@ class CustomApplication():
         self.Model = None
         self.continue_testing = True
         self.connect_signals()
+        self.initialize()
         self.app.show()
 
     def connect_signals(self):
@@ -54,6 +57,20 @@ class CustomApplication():
         shortcut.activated.connect(self.test_trigger)
         self.app.ui.actionDevicesList.triggered.connect(self.show_devices_list)
     
+    def initialize(self):
+        self.initialize_table()
+        
+    def initialize_table(self):
+        table = self.app.ui.TestResultsTable
+        table.setColumnWidth(0, 150)
+        table.setColumnWidth(1, 90)
+        table.setColumnWidth(2, 90)
+        table.setColumnWidth(3, 90)
+        table.setColumnWidth(4, 90)
+        table.setColumnWidth(5, 90)
+        table.setColumnWidth(6, 90)
+        QApplication.processEvents()
+        
     def start(self):
         print('Started')
         #TODO pass model from settings
@@ -81,9 +98,18 @@ class CustomApplication():
         continue_testing = self.continue_testing
         try:
             self.engine.pre_uut_loop()
-        except:
+            
+        except DMMExceptions.OpenError:
             self.showMessageBox('Warning', 'Please Reset Digital Multimeter')
             self.stop()
+        except PrinterExceptions.PrinterOpenError:
+            self.showMessageBox('Warning', 'Please Reset Printer')
+            self.stop()
+        except Exception as e:
+            print(e)
+            self.showMessageBox('Warning', 'Error in PreUUTLoop')
+            self.stop()
+            
         
         self.show_user_message('Instruments Ready')
         self.show_user_message('Waiting for unit')
@@ -110,11 +136,20 @@ class CustomApplication():
         
         if continue_testing:
             
-            continue_testing = self.engine.pre_uut()
-            self.app.ui.SerialLineEdit.setText(self.engine.process_model.parameters.current_serial)
-            self.engine.main()
-            self.engine.post_uut()
-            self.update_views()
+            try:
+                continue_testing = self.engine.pre_uut()
+                self.app.ui.SerialLineEdit.setText(self.engine.process_model.parameters.current_serial)
+                self.engine.main()
+                self.engine.post_uut()
+                self.update_views()
+                
+            except PrinterExceptions.PrinterOpenError:
+                self.showMessageBox('Warning', 'Printer Disconnected, Please Reset')
+                self.showMessageBox('Warning', 'Test Again')
+                self.app.ui.SerialLineEdit.setText('')
+                self.show_user_message('Waiting for unit')
+                self.app.ui.MainMessageLineEdit.setText('PRESS ENTER')
+                self.app.ui.MainMessageLineEdit.setStyleSheet('background-color: white;')
         
         else:
             self.engine.post_uut_loop()
@@ -139,14 +174,15 @@ class CustomApplication():
         font = QtGui.QFont("Arial", 10)
         table.setFont(font)
         table.setRowCount(len(test_results_list))
+        
         for row, test_result in enumerate(test_results_list):
-            table.setItem(row, 0, QTableWidgetItem(test_result.test_name))
-            table.setItem(row, 1, QTableWidgetItem(str(test_result.low_limit)))
-            table.setItem(row, 2, QTableWidgetItem(str(test_result.high_limit)))
-            table.setItem(row, 3, QTableWidgetItem(str(test_result.measure)))
-            table.setItem(row, 4, QTableWidgetItem(test_result.units))
-            table.setItem(row, 5, QTableWidgetItem(test_result.result))
-            table.setItem(row, 6, QTableWidgetItem(str(test_result.time)))
+            for col, value in enumerate([test_result.test_name, str(test_result.low_limit),
+                                        str(test_result.high_limit), str(test_result.measure),
+                                        test_result.units, test_result.result, str(test_result.time)]):
+                item = QTableWidgetItem(value)
+                item.setTextAlignment(Qt.AlignCenter)  # Center-align the text
+                table.setItem(row, col, item)
+        
         QApplication.processEvents()
     
     def reset_indicators(self):

@@ -14,12 +14,19 @@ from .sequences import ResistanceTestSequence
 from .sequences import CreateTestResultsSequence
 from .sequences import ReportResultsSequence
 from .sequences import CloseInstrumentsSequence
+from.sequences import PrintLabelSequence
+from .sequences import SaveResultsSequence
+from .sequences import DefineCustomParametersSequence
 
-from .utilities.custom_exceptions import exceptions_handler_preuutloop
+from .utilities.custom_exceptions import exceptions_handler_preuutloop, PreUUTLoopException
 from .utilities.custom_exceptions import exceptions_handler_preuut
 from .utilities.custom_exceptions import exceptions_handler_main
 from .utilities.custom_exceptions import exceptions_handler_postuut
 from .utilities.custom_exceptions import exceptions_handler_postuutloop
+
+from .libraries.DMM import exceptions as ExceptionsDMM
+from .libraries.Printer import exceptions as ExceptionsPrinter
+
 
 class AbstractProcessModel:
     
@@ -53,25 +60,38 @@ class ITWProcessModel(AbstractProcessModel):
     def __init__(self):
         self.parameters = Parameters()
 
-    @exceptions_handler_preuutloop    
+    #@exceptions_handler_preuutloop    
     def pre_uut_loop(self):
         super().pre_uut_loop()
+        try:
+            Sequence = ReadConfigurationFiles(parameters=self.parameters)
+            self.parameters = Sequence.parameters
+            del Sequence
+            
+            Sequence = DefineCustomParametersSequence(parameters=self.parameters)
+            self.parameters = Sequence.parameters
+            del Sequence
+            
+            Sequence = CreateInstrumentsSequence(parameters=self.parameters)
+            self.parameters = Sequence.parameters
+            del Sequence
         
-        Sequence = ReadConfigurationFiles(parameters=self.parameters)
-        self.parameters = Sequence.parameters
-        del Sequence
+            Sequence = InitializeInstrumentsSequence(parameters=self.parameters)
+            self.parameters = Sequence.parameters
+            del Sequence
+            
+            Sequence = ConfigureInstrumentsSequence(parameters=self.parameters)
+            self.parameters = Sequence.parameters
+            del Sequence
+            
+        except ExceptionsDMM.OpenError:
+            raise ExceptionsDMM.OpenError('')
         
-        Sequence = CreateInstrumentsSequence(parameters=self.parameters)
-        self.parameters = Sequence.parameters
-        del Sequence
-    
-        Sequence = InitializeInstrumentsSequence(parameters=self.parameters)
-        self.parameters = Sequence.parameters
-        del Sequence
+        except ExceptionsPrinter.PrinterOpenError:
+            raise ExceptionsPrinter.PrinterOpenError('')
         
-        Sequence = ConfigureInstrumentsSequence(parameters=self.parameters)
-        self.parameters = Sequence.parameters
-        del Sequence
+        except:
+            raise PreUUTLoopException('')
     
     @exceptions_handler_preuut
     def pre_uut(self):
@@ -102,17 +122,34 @@ class ITWProcessModel(AbstractProcessModel):
         self.parameters = Sequence.parameters
         del Sequence
     
-    @exceptions_handler_postuut
+    #@exceptions_handler_postuut
     def post_uut(self):
         super().post_uut()
         
-        Sequence = CreateTestResultsSequence(parameters=self.parameters)
-        self.parameters = Sequence.parameters
-        del Sequence
+        try:
         
-        Sequence = ReportResultsSequence(parameters=self.parameters)
-        self.parameters = Sequence.parameters
-        del Sequence
+            Sequence = CreateTestResultsSequence(parameters=self.parameters)
+            self.parameters = Sequence.parameters
+            del Sequence
+            
+            Sequence = SaveResultsSequence(parameters=self.parameters)
+            self.parameters = Sequence.parameters
+            del Sequence
+            
+            Sequence = ReportResultsSequence(parameters=self.parameters)
+            self.parameters = Sequence.parameters
+            del Sequence
+            
+            Sequence = PrintLabelSequence(parameters=self.parameters)
+            self.parameters = Sequence.parameters
+            del Sequence
+            
+        except ExceptionsPrinter.PrinterOpenError:
+            raise ExceptionsPrinter.PrinterOpenError('')
+        
+        except:
+            raise PreUUTLoopException('')
+            
     
     @exceptions_handler_postuutloop
     def post_uut_loop(self):

@@ -5,6 +5,9 @@ from .utilities.datatypes import Parameters
 from .utilities.datatypes import StationSettings, InstrumentSettings, TestSettings
 from .utilities.datatypes import TestResults
 from .libraries.DMM.DMM import DMM, Gdm834x
+from .libraries.Printer.Printer import Printer, ZD411
+from .libraries.Printer import exceptions as PrinterExceptions
+from .utilities import utilities as utils
 
 from .utilities.utilities import Timer, Serializer
 class AbstractSequence:
@@ -28,6 +31,7 @@ class AbstractSequence:
         self.setup()
         self.main()
         self.cleanup()
+
 
 # [PreUUTLoop Sequences]
 
@@ -55,15 +59,43 @@ class ReadConfigurationFiles(AbstractSequence):
         
         return super().main()
 
+class DefineCustomParametersSequence(AbstractSequence):
+    
+    def main(self):
+        # Define settings paths
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        
+        if getattr(sys, 'frozen', False):
+            # Running as compiled executable
+            settings_folder = os.path.join(sys._MEIPASS, 'engine', 'settings')
+        else:
+            # Running from source code
+            settings_folder = os.path.join(current_dir, 'settings')
+        print('Settings:')
+        print(settings_folder)
+        # Printer
+        printer = self.parameters.InstrumentSettings.Printer
+        printer.zpl_absolute_template = f'{settings_folder}\\{printer.zpl_template}'
+        printer.zpl_absolute_file = f'{settings_folder}\\{printer.zpl_file}'
+        
+        return super().main()
+
 class CreateInstrumentsSequence(AbstractSequence):
     
     def main(self):
         
         # DMM
-        if self.parameters.InstrumentSettings.DMM.enabled:
-            inst_type = self.parameters.InstrumentSettings.DMM.instrument_type
-            self.parameters.InstrumentSettings.DMM.handle = Gdm834x()
-            print(f'-\tDMM type is: {self.parameters.InstrumentSettings.DMM.handle}')
+        dmm = self.parameters.InstrumentSettings.DMM
+        if dmm.enabled:
+            inst_type = dmm.instrument_type
+            dmm.handle = Gdm834x()
+            print(f'-\tDMM type is: {dmm.handle}')
+        
+        # Printer
+        printer = self.parameters.InstrumentSettings.Printer
+        if printer.enabled:
+            printer.handle = ZD411()
+            print(f'-\tPrinter type is: {printer.handle}')
         
         #TBD
         
@@ -79,7 +111,15 @@ class InitializeInstrumentsSequence(AbstractSequence):
             address = dmm.address
             dmm.handle.open(address=address)
             print('-\tDMM opened.')
-        
+        try:  
+            # Printer
+            printer = self.parameters.InstrumentSettings.Printer
+            if printer.enabled:
+                address = printer.address
+                print(address)
+                printer.handle.open(address=address)
+        except Exception as e:
+            raise e
         #TBD
         
         return super().main()
@@ -143,8 +183,9 @@ class ResistanceTestSequence(AbstractSequence):
     def main(self):
         
         tests = self.parameters.TestSettings
+        dmm = self.parameters.InstrumentSettings.DMM
         
-        if tests.ResistanceTest.test_active:
+        if tests.ResistanceTest.test_active and dmm.enabled:
             #TODO measure time
             test_timer = Timer()
             test_timer.reset()
@@ -189,6 +230,22 @@ class CreateTestResultsSequence(AbstractSequence):
         self.parameters.general_result = general_result
         return super().main()
 
+class SaveResultsSequence(AbstractSequence):
+    
+    def main(self):
+        """Save serial and general result into a textfile for traceability"""
+        try:
+            ITW_PATH = 'C:\ITW'
+            serial = self.parameters.current_serial
+            general_result = self.parameters.general_result
+            line = f"{serial},{general_result}"
+            history_filepath = utils.create_text_file(ITW_PATH)
+            utils.append_line_to_text_file(path=history_filepath, line=line)
+            print("Added result to History textfile")
+        except:
+            print('No se pudo guardar nada en el archivo de texto')
+        return super().main()
+
 class ReportResultsSequence(AbstractSequence):
     
     def main(self):
@@ -196,6 +253,31 @@ class ReportResultsSequence(AbstractSequence):
         #self.parameters.TestResults.clear()
         return super().main()
 
+class PrintLabelSequence(AbstractSequence):
+    
+    def main(self):
+        
+        # Printer
+        printer = self.parameters.InstrumentSettings.Printer
+        if printer.enabled:
+            passed = self.parameters.general_result == "PASS"
+            
+            template = self.parameters.InstrumentSettings.Printer.zpl_absolute_template  #C:\ITW\itw-tester\engine\settings\data\zpl_template.txt'
+            label = self.parameters.InstrumentSettings.Printer.zpl_absolute_file         #'C:\ITW\itw-tester\engine\settings\data\zpl_file.txt'
+            current_serial = self.parameters.current_serial
+            
+            parameters = ['30', '0', '0', current_serial, current_serial]
+            
+            if passed:
+                try:
+                    
+                    printer.handle.print_shot(template, parameters, label)
+                
+                except PrinterExceptions.PrinterOpenError:
+                    raise PrinterExceptions.PrinterOpenError('Printer Disconected: Please Reset')
+        #TBD
+            #self.parameters.TestResults.clear()
+            return super().main()
 
 # [PostUUTLoop Sequences]
 
