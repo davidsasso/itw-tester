@@ -101,14 +101,25 @@ class ZD411(Printer):
     def print(self, filepath: str):
         """Send command via CMD to print"""
         try:
-            if not os.path.exists(filepath):
+            print(filepath)
+            exists = not os.path.exists(filepath)
+            print('Exists: ', exists)
+            if exists:
                 raise PrinterZPLFileError(f"Label {filepath} does not exists")
-            command = "ssdal.exe" ,"/p", f"{self.address}", "send", f"{filepath}"
+            
+            # Using Seagul
+            #command = "ssdal.exe" ,"/p", f"{self.address}", "send", f"{filepath}"
+            #print('Print Command: ', command)
+            #subprocess.call(["ssdal.exe" ,"/p", f"{self.address}", "send", f"{filepath}"])
+            
+            # Using Generic Printer (start /min notepad.exe /p "C:\ITW\itw-tester\engine\settings\data\zpl_file.txt")
+            command = f'start /min notepad.exe /p "{filepath}"'
             print('Print Command: ', command)
-            subprocess.call(["ssdal.exe" ,"/p", f"{self.address}", "send", f"{filepath}"])
-        except Exception as e:
-            raise e
-            raise PrinterDriverError(f"Check if SSDAL.EXE is installed in C:\\Windows")
+            subprocess.run(command, shell=True, check=True)
+            
+        except:
+            #raise PrinterDriverError(f"Check if SSDAL.EXE is installed in C:\\Windows")
+            raise PrinterDriverError(f"Select Generic {self.address} as DEFAULT Printer")
     
     def print_shot(self,template_filepath: str, parameters: list, label_filepath: str):
         connected = self.is_connected()
@@ -127,7 +138,7 @@ if __name__ == '__main__':
     printer = ZD411()
     printer.open(address)
     template = 'C:\ITW\itw-tester\engine\settings\data\zpl_template.txt'
-    parameters = ['30', '0', '0', 'PUTO EL QUE LO LEA', 'DO NOT SCAN']
+    parameters = ['30', '0', '0', 'SERIAL', 'SERIAL']
     label = 'C:\ITW\itw-tester\engine\settings\data\zpl_file.txt'
     #printer.generate_label(template, parameters, label)
     printer.print_shot(template, parameters, label)
