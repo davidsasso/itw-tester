@@ -14,6 +14,8 @@ from ui.gui import Ui_MainWindow
 from engine.datatypes.local_settings import StationSettings
 from engine.engine import Engine
 from engine.process_model import ITWProcessModel
+from engine.libraries.DMM import exceptions as DMMExceptions
+from engine.libraries.Printer import exceptions as PrinterExceptions
 
 class Application(QtWidgets.QMainWindow):
     """ Main Application parser for Custom Application """
@@ -96,9 +98,18 @@ class CustomApplication():
         continue_testing = self.continue_testing
         try:
             self.engine.pre_uut_loop()
-        except:
+            
+        except DMMExceptions.OpenError:
             self.showMessageBox('Warning', 'Please Reset Digital Multimeter')
             self.stop()
+        except PrinterExceptions.PrinterOpenError:
+            self.showMessageBox('Warning', 'Please Reset Printer')
+            self.stop()
+        except Exception as e:
+            print(e)
+            self.showMessageBox('Warning', 'Error in PreUUTLoop')
+            self.stop()
+            
         
         self.show_user_message('Instruments Ready')
         self.show_user_message('Waiting for unit')
@@ -125,11 +136,20 @@ class CustomApplication():
         
         if continue_testing:
             
-            continue_testing = self.engine.pre_uut()
-            self.app.ui.SerialLineEdit.setText(self.engine.process_model.parameters.current_serial)
-            self.engine.main()
-            self.engine.post_uut()
-            self.update_views()
+            try:
+                continue_testing = self.engine.pre_uut()
+                self.app.ui.SerialLineEdit.setText(self.engine.process_model.parameters.current_serial)
+                self.engine.main()
+                self.engine.post_uut()
+                self.update_views()
+                
+            except PrinterExceptions.PrinterOpenError:
+                self.showMessageBox('Warning', 'Printer Disconnected, Please Reset')
+                self.showMessageBox('Warning', 'Test Again')
+                self.app.ui.SerialLineEdit.setText('')
+                self.show_user_message('Waiting for unit')
+                self.app.ui.MainMessageLineEdit.setText('PRESS ENTER')
+                self.app.ui.MainMessageLineEdit.setStyleSheet('background-color: white;')
         
         else:
             self.engine.post_uut_loop()

@@ -6,6 +6,7 @@ from .utilities.datatypes import StationSettings, InstrumentSettings, TestSettin
 from .utilities.datatypes import TestResults
 from .libraries.DMM.DMM import DMM, Gdm834x
 from .libraries.Printer.Printer import Printer, ZD411
+from .libraries.Printer import exceptions as PrinterExceptions
 from .utilities import utilities as utils
 
 from .utilities.utilities import Timer, Serializer
@@ -30,6 +31,7 @@ class AbstractSequence:
         self.setup()
         self.main()
         self.cleanup()
+
 
 # [PreUUTLoop Sequences]
 
@@ -267,7 +269,12 @@ class PrintLabelSequence(AbstractSequence):
             parameters = ['30', '0', '0', current_serial, current_serial]
             
             if passed:
-                printer.handle.print_shot(template, parameters, label)
+                try:
+                    
+                    printer.handle.print_shot(template, parameters, label)
+                
+                except PrinterExceptions.PrinterOpenError:
+                    raise PrinterExceptions.PrinterOpenError('Printer Disconected: Please Reset')
         #TBD
             #self.parameters.TestResults.clear()
             return super().main()
