@@ -45,9 +45,37 @@ class Serializer:
         current_datetime = datetime.datetime.now()
 
         # Format datatime: YYYYMMDDHHMMSS
-        serial = current_datetime.strftime("%Y%m%d%H%M%S")
+        #serial = current_datetime.strftime("%Y%m%d%H%M%S")
+        serial = current_datetime.strftime("%Y%m%d%H")
         
         return serial
+
+class Consecutive:
+    
+    def __init__(self):
+        self.last_consecutive = None
+        self.next_consecutive = None
+    
+    def get_last_from_history(self, filepath: str):
+        #TODO read file
+        #TODO get last line
+        #TODO parse consecutive
+        #TODO get last and set in last_consecutive
+        pass
+    
+    def get_new_consecutive(self):
+        #TODO increase by 1 last_consecutive
+        #TODO return new value
+        pass
+    
+    def generate(self, filepath: str):
+        # Obtain current datetime
+        self.get_last_from_history()
+
+        # Format datatime: YYYYMMDDHHMMSS
+        consecutive = "FFFFFF"
+        
+        return consecutive
 
 
 def create_text_file(path: str):
@@ -64,10 +92,11 @@ def create_text_file(path: str):
     if not os.path.exists(complete_path):
         # Create the file and write something in it (optional)
         with open(complete_path, 'w') as file:
-            file.write("serial,general_result\n")
+            file.write("serial,measure,general_result\n")
         print(f'File "{file_name}" has been created successfully in the folder "{path}".')
     else:
         print(f'File "{file_name}" already exists in the folder "{path}". No new file has been created.')
+        pass
 
     # Return the complete path of the file, whether it was created or not
     return complete_path
@@ -76,3 +105,21 @@ def append_line_to_text_file(path: str, line: str):
     # Open the file in append mode and add the specified line
     with open(path, 'a') as file:
         file.write(line + '\n')
+
+def get_last_line(filepath: str):
+    try:
+        with open(filepath, 'r') as file:
+            # Read all lines from the file
+            lines = file.readlines()
+
+            # Check if the file is not empty
+            if lines:
+                # Get the last line
+                last_line = lines[-1].strip()
+                return last_line
+            else:
+                return None
+    except FileNotFoundError:
+        return None
+    except Exception as e:
+        return None
