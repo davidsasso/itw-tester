@@ -82,7 +82,7 @@
 /*background-color: #00723A;</string>
     </property>
     <property name="text">
-     <string>PRESS START</string>
+     <string>PRESIONA INICIAR</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
@@ -459,7 +459,7 @@ QTableWidget::item:selected {
      <string notr="true">color: #747474;</string>
     </property>
     <property name="text">
-     <string>Serial Number:</string>
+     <string>Numero de Serie</string>
     </property>
    </widget>
    <widget class="QLabel" name="ProductInformationLabel">
@@ -514,7 +514,7 @@ QTableWidget::item:selected {
     <property name="geometry">
      <rect>
       <x>390</x>
-      <y>640</y>
+      <y>620</y>
       <width>111</width>
       <height>41</height>
      </rect>
@@ -543,9 +543,9 @@ QTableWidget::item:selected {
    <widget class="QLabel" name="TotalTestTimeLabel">
     <property name="geometry">
      <rect>
-      <x>200</x>
-      <y>640</y>
-      <width>181</width>
+      <x>170</x>
+      <y>620</y>
+      <width>211</width>
       <height>41</height>
      </rect>
     </property>
@@ -561,7 +561,7 @@ QTableWidget::item:selected {
      <string notr="true">color: #747474;</string>
     </property>
     <property name="text">
-     <string>Total Test Time:</string>
+     <string>Tiempo de Prueba:</string>
     </property>
    </widget>
    <widget class="QLabel" name="IPAddressLabel">
@@ -660,7 +660,7 @@ QTableWidget::item:selected {
      <string notr="true">color: #747474;</string>
     </property>
     <property name="text">
-     <string>Results:</string>
+     <string>Resultados</string>
     </property>
    </widget>
    <widget class="QStackedWidget" name="stackedWidget">
@@ -815,10 +815,11 @@ QTableWidget::item:selected {
      </font>
     </property>
     <property name="styleSheet">
-     <string notr="true">color: #0b0b0b;</string>
+     <string notr="true">background-color: #ABF7B1;
+color: #0b0b0b;</string>
     </property>
     <property name="text">
-     <string>Start Test</string>
+     <string>Inicializar</string>
     </property>
    </widget>
    <widget class="QPushButton" name="StopButton">
@@ -827,8 +828,8 @@ QTableWidget::item:selected {
     </property>
     <property name="geometry">
      <rect>
-      <x>570</x>
-      <y>630</y>
+      <x>600</x>
+      <y>610</y>
       <width>131</width>
       <height>51</height>
      </rect>
@@ -842,10 +843,11 @@ QTableWidget::item:selected {
      </font>
     </property>
     <property name="styleSheet">
-     <string notr="true">color: #0b0b0b;</string>
+     <string notr="true">background-color: #FFCDD2;
+color: #0b0b0b;</string>
     </property>
     <property name="text">
-     <string>Stop</string>
+     <string>Cerrar</string>
     </property>
    </widget>
    <widget class="QLabel" name="UserMessageLabel">
@@ -869,7 +871,7 @@ QTableWidget::item:selected {
      <string notr="true">color: red;</string>
     </property>
     <property name="text">
-     <string>Test Solution</string>
+     <string>PRUEBA DE RESISTENCIA</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
@@ -879,7 +881,7 @@ QTableWidget::item:selected {
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>580</y>
+      <y>570</y>
       <width>141</width>
       <height>141</height>
      </rect>
@@ -895,6 +897,30 @@ QTableWidget::item:selected {
     </property>
     <property name="margin">
      <number>-20</number>
+    </property>
+   </widget>
+   <widget class="QLabel" name="TotalTestTimeLabel_2">
+    <property name="geometry">
+     <rect>
+      <x>510</x>
+      <y>620</y>
+      <width>51</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Arial Black</family>
+      <pointsize>12</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: #747474;</string>
+    </property>
+    <property name="text">
+     <string>seg.</string>
     </property>
    </widget>
    <zorder>stackedWidget</zorder>
@@ -918,6 +944,7 @@ QTableWidget::item:selected {
    <zorder>LogoLabel</zorder>
    <zorder>LogoLabel_2</zorder>
    <zorder>TopLineLabel_3</zorder>
+   <zorder>TotalTestTimeLabel_2</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
