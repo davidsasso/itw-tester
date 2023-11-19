@@ -17,6 +17,7 @@ from .sequences import CloseInstrumentsSequence
 from.sequences import PrintLabelSequence
 from .sequences import SaveResultsSequence
 from .sequences import DefineCustomParametersSequence
+from .sequences import AddonsSequence
 
 from .utilities.custom_exceptions import exceptions_handler_preuutloop, PreUUTLoopException
 from .utilities.custom_exceptions import exceptions_handler_preuut
@@ -69,6 +70,10 @@ class ITWProcessModel(AbstractProcessModel):
             del Sequence
             
             Sequence = DefineCustomParametersSequence(parameters=self.parameters)
+            self.parameters = Sequence.parameters
+            del Sequence
+            
+            Sequence = AddonsSequence(parameters=self.parameters)
             self.parameters = Sequence.parameters
             del Sequence
             

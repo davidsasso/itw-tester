@@ -73,10 +73,33 @@ class DefineCustomParametersSequence(AbstractSequence):
             settings_folder = os.path.join(current_dir, 'settings')
         print('Settings:')
         print(settings_folder)
+        
+        # Main Folder
+        self.parameters.main_folder = 'C:\ITW' # ITW Main Folder
+        
         # Printer
         printer = self.parameters.InstrumentSettings.Printer
         printer.zpl_absolute_template = f'{settings_folder}\\{printer.zpl_template}'
         printer.zpl_absolute_file = f'{settings_folder}\\{printer.zpl_file}'
+        
+        return super().main()
+
+class AddonsSequence(AbstractSequence):
+    
+    def main(self):
+        # Define settings paths
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        
+        if getattr(sys, 'frozen', False):
+            # Running as compiled executable
+            settings_folder = os.path.join(sys._MEIPASS, 'engine', 'settings')
+        else:
+            # Running from source code
+            settings_folder = os.path.join(current_dir, 'settings')
+        
+        ITW_PATH = self.parameters.main_folder
+        history_filepath = utils.create_text_file(ITW_PATH)
+        self.parameters.TraceInformation.current_history_filepath = history_filepath
         
         return super().main()
 
@@ -164,11 +187,37 @@ class WaitTriggerSequence(AbstractSequence):
 class SerializeSequence(AbstractSequence):
     
     def main(self):
-        #TODO define next serial and create it
-
+        # Part Number
+        part_number = self.parameters.StationSettings.Product.part_number
+        
+        # Consecutive
+        ITW_PATH = self.parameters.main_folder
+        history_filepath = utils.create_text_file(ITW_PATH)
+        self.parameters.TraceInformation.current_history_filepath = history_filepath
+        last_result = utils.get_last_line(filepath=history_filepath)
+        
+        try:
+            information = last_result.split(',') #[DECALV32023111114102200001, 0.0 FAIL]
+            last_serial = information[0] # DECALV32023111114102200001
+            consecutive = last_serial[-5:-1]
+            consecutive = int(consecutive)
+            incremented_consecutive = consecutive + 1
+        except:
+            incremented_consecutive = 1
+            
+        new_consecutive = str(incremented_consecutive).zfill(4)
+        print('Este es el consecutivo: ', new_consecutive)
+            
+        # Datecode
         serializer = Serializer()
-        serial = serializer.generate()
+        datecode = serializer.generate()
         del serializer
+        
+        # Cell ID
+        cell_id = self.parameters.StationSettings.StationData.cell_id
+        
+        # Full Serial
+        serial = f'{part_number}{datecode}{new_consecutive}{cell_id}'
         
         print("Serial Name:", serial)
         
@@ -238,7 +287,8 @@ class SaveResultsSequence(AbstractSequence):
             ITW_PATH = 'C:\ITW'
             serial = self.parameters.current_serial
             general_result = self.parameters.general_result
-            line = f"{serial},{general_result}"
+            measurement = self.parameters.TestResults[0].measure # Using just 1 test
+            line = f"{serial},{measurement},{general_result}"
             history_filepath = utils.create_text_file(ITW_PATH)
             utils.append_line_to_text_file(path=history_filepath, line=line)
             print("Added result to History textfile")

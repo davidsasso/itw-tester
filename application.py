@@ -11,7 +11,7 @@ import pyvisa
 # Custom Imports
 #from ui.main_window import Ui_MainWindow
 from ui.gui import Ui_MainWindow
-from engine.datatypes.local_settings import StationSettings
+from engine.utilities.datatypes import StationSettings
 from engine.engine import Engine
 from engine.process_model import ITWProcessModel
 from engine.libraries.DMM import exceptions as DMMExceptions
@@ -58,8 +58,30 @@ class CustomApplication():
         self.app.ui.actionDevicesList.triggered.connect(self.show_devices_list)
     
     def initialize(self):
+        self.read_configuration()
         self.initialize_table()
+    
+    def read_configuration(self):
+        # Define settings paths
+        current_dir = os.path.dirname(os.path.abspath(__file__))
         
+        if getattr(sys, 'frozen', False):
+            # Running as compiled executable
+            settings_folder = os.path.join(sys._MEIPASS, 'engine', 'settings')
+        else:
+            # Running from source code
+            settings_folder = os.path.join(current_dir, 'engine\settings')
+        
+        station_settings_path = os.path.join(current_dir, f'{settings_folder}\\station_settings.ini')
+        
+        print('STATIONNAME')
+        print(station_settings_path)
+        
+        self.StationSettings = StationSettings(filepath=station_settings_path)
+        
+        station_name = self.StationSettings.StationData.station_name
+        self.app.ui.StationNameLabel.setText(station_name)
+    
     def initialize_table(self):
         table = self.app.ui.TestResultsTable
         table.setColumnWidth(0, 150)
@@ -76,7 +98,7 @@ class CustomApplication():
         #TODO pass model from settings
         self.Model = ITWProcessModel()
         self.engine = Engine(sequence_process_model=self.Model)
-        self.show_user_message('Instruments Setup')
+        self.show_user_message('Configurando Instrumentos')
         #self.engine.pre_uut_loop()
         self.run()
         #self.show_user_message('Instruments Ready')
@@ -85,14 +107,14 @@ class CustomApplication():
     def test(self):
         print('Test\n')
     
-        self.show_user_message('Testing')
+        self.show_user_message('Probando')
         
         self.engine.pre_uut()
         self.engine.main()
         self.engine.post_uut()
         
         self.app.ui.SerialLineEdit.setText('')
-        self.show_user_message('Scan Serial')
+        self.show_user_message('Escanea Serial')
     
     def run(self):
         continue_testing = self.continue_testing
@@ -100,10 +122,10 @@ class CustomApplication():
             self.engine.pre_uut_loop()
             
         except DMMExceptions.OpenError:
-            self.showMessageBox('Warning', 'Please Reset Digital Multimeter')
+            self.showMessageBox('Advertencia', 'Multimetro no detectado, Conectalo y Enciendelo')
             self.stop()
         except PrinterExceptions.PrinterOpenError:
-            self.showMessageBox('Warning', 'Please Reset Printer')
+            self.showMessageBox('Advertencia', 'Impresora no detectada, Conectalo y Enciendelo')
             self.stop()
         except Exception as e:
             print(e)
@@ -111,9 +133,9 @@ class CustomApplication():
             self.stop()
             
         
-        self.show_user_message('Instruments Ready')
-        self.show_user_message('Waiting for unit')
-        self.app.ui.MainMessageLineEdit.setText('PRESS ENTER')
+        self.show_user_message('Instrumentos Listos')
+        self.show_user_message('CONECTA LAS TERMINALES')
+        self.app.ui.MainMessageLineEdit.setText('PRESIONA ENTER')
         self.app.ui.MainMessageLineEdit.setStyleSheet('background-color: white;')
         self.app.ui.TestButton.setEnabled(True)
         self.app.ui.StopButton.setEnabled(True)
@@ -144,11 +166,11 @@ class CustomApplication():
                 self.update_views()
                 
             except PrinterExceptions.PrinterOpenError:
-                self.showMessageBox('Warning', 'Printer Disconnected, Please Reset')
-                self.showMessageBox('Warning', 'Test Again')
+                self.showMessageBox('Advertencia', 'Impresora no detectada, Conectala')
+                self.showMessageBox('Advertencia', 'Intenta hacer la prueba')
                 self.app.ui.SerialLineEdit.setText('')
-                self.show_user_message('Waiting for unit')
-                self.app.ui.MainMessageLineEdit.setText('PRESS ENTER')
+                self.show_user_message('CONECTA LAS TERMINALES')
+                self.app.ui.MainMessageLineEdit.setText('PRESIONA ENTER')
                 self.app.ui.MainMessageLineEdit.setStyleSheet('background-color: white;')
         
         else:
@@ -160,12 +182,15 @@ class CustomApplication():
         
         if general_result == 'PASS':
             self.app.ui.MainMessageLineEdit.setStyleSheet('background-color: green;')
+            self.app.ui.MainMessageLineEdit.setText('PASA')
+            self.app.ui.UserMessageLabel.setText('COLOCA LA ETIQUETA')
         elif general_result == 'FAIL':
             self.app.ui.MainMessageLineEdit.setStyleSheet('background-color: red;')
+            self.app.ui.MainMessageLineEdit.setText('FALLA')
+            self.app.ui.UserMessageLabel.setText('PRUEBA DE NUEVO')
         else:
             pass
         
-        self.app.ui.UserMessageLabel.setText('Waiting for Trigger..')
         
         self.update_results_table(self.engine.process_model.parameters.TestResults)
     
@@ -186,10 +211,10 @@ class CustomApplication():
         QApplication.processEvents()
     
     def reset_indicators(self):
-        self.app.ui.MainMessageLineEdit.setText('TESTING')
+        self.app.ui.MainMessageLineEdit.setText('Probando')
         self.app.ui.MainMessageLineEdit.setStyleSheet('background-color: yellow;')
         
-        self.app.ui.UserMessageLabel.setText('Testing...')
+        self.app.ui.UserMessageLabel.setText('Probando...')
         
         self.app.ui.SerialLineEdit.setText('')
         
@@ -207,12 +232,12 @@ class CustomApplication():
         rm.close()
 
         device_list_text = "\n".join(devices)
-        QMessageBox.information(self.app, 'Available Devices', device_list_text)
+        QMessageBox.information(self.app, 'Dispositivos Encontrados', device_list_text)
     
     def stop(self):
         #self.timer.stop()
-        self.app.ui.MainMessageLineEdit.setText('EXIT')
-        self.show_user_message('Stopped')
+        self.app.ui.MainMessageLineEdit.setText('CERRANDO')
+        self.show_user_message('Cerrando Aplicacion')
         QApplication.processEvents()
         print('Stopped')
         try:

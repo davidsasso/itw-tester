@@ -7,6 +7,10 @@ class StationData:
         self.station_name = str()
         self.cell_id = str()
 
+class Product:
+    def __init__(self):
+        self.part_number = str()
+
 class SettingsFile:
     
     def __init__(self, filepath):
@@ -172,6 +176,7 @@ class StationSettings(SettingsFile):
     def __init__(self, filepath):
         self.filepath = filepath
         self.StationData = StationData()
+        self.Product = Product()
         
         self.read_all()
 
@@ -179,6 +184,7 @@ class StationSettings(SettingsFile):
     def read_all(self):
         ''' Read all sections. '''
         self.read_station_data()
+        self.read_product()
 
     def read_station_data(self):
         ''' Method to read StationData section. '''
@@ -186,6 +192,12 @@ class StationSettings(SettingsFile):
         section = 'StationData'
         self.StationData.station_name = self.get_value(section, key='station_name')
         self.StationData.cell_id = self.get_value(section, key='cell_id')
+    
+    def read_product(self):
+        ''' Method to read Product section. '''
+        
+        section = 'Product'
+        self.Product.part_number = self.get_value(section, key='part_number')
     
     def __str__(self):
         print('\n-- station_settings --')
@@ -295,6 +307,9 @@ class TestSettings(SettingsFile):
         return_string = ResistanceTest
         return return_string
 
+class TraceInformation:
+    def __init__(self):
+        self.current_history_filepath = str()
 
 class Parameters:
     
@@ -305,6 +320,8 @@ class Parameters:
         self.current_serial = None
         self.TestResults = []
         self.general_result = str()
+        self.main_folder = str()
+        self.TraceInformation = TraceInformation()
     
     def __str__(self):
         return f"Station settings: {self.StationSettings}\nInstrument settings: {self.InstrumentSettings}\nTest settings: {self.TestSettings}"
