@@ -27,6 +27,7 @@ from .utilities.custom_exceptions import exceptions_handler_postuutloop
 
 from .libraries.DMM import exceptions as ExceptionsDMM
 from .libraries.Printer import exceptions as ExceptionsPrinter
+from .libraries.DAQ import exceptions as ExceptionsDAQ
 
 
 class AbstractProcessModel:
@@ -95,6 +96,8 @@ class ITWProcessModel(AbstractProcessModel):
         except ExceptionsPrinter.PrinterOpenError:
             raise ExceptionsPrinter.PrinterOpenError('')
         
+        except ExceptionsDAQ.DAQOpenError:
+            raise ExceptionsDAQ.DAQOpenError('')
         except:
             raise PreUUTLoopException('')
     
@@ -102,9 +105,12 @@ class ITWProcessModel(AbstractProcessModel):
     def pre_uut(self):
         super().pre_uut()
         
-        #Sequence = WaitTriggerSequence(parameters=self.parameters)
-        #self.parameters = Sequence.parameters
-        #del Sequence
+        operation_mode = self.parameters.StationSettings.StationData.mode
+        
+        if operation_mode == 'AUTO':
+            Sequence = WaitTriggerSequence(parameters=self.parameters)
+            self.parameters = Sequence.parameters
+            del Sequence
         
         Sequence = SerializeSequence(parameters=self.parameters)
         self.parameters = Sequence.parameters

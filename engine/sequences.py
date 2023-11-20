@@ -6,6 +6,7 @@ from .utilities.datatypes import StationSettings, InstrumentSettings, TestSettin
 from .utilities.datatypes import TestResults
 from .libraries.DMM.DMM import DMM, Gdm834x
 from .libraries.Printer.Printer import Printer, ZD411
+from .libraries.DAQ.DAQ import DAQ, FX3U
 from .libraries.Printer import exceptions as PrinterExceptions
 from .utilities import utilities as utils
 
@@ -120,6 +121,13 @@ class CreateInstrumentsSequence(AbstractSequence):
             printer.handle = ZD411()
             print(f'-\tPrinter type is: {printer.handle}')
         
+        # DMM
+        daq = self.parameters.InstrumentSettings.DAQ
+        if daq.enabled:
+            inst_type = daq.instrument_type
+            daq.handle = FX3U()
+            print(f'-\tDAQ type is: {daq.handle}')
+            
         #TBD
         
         return super().main()
@@ -134,6 +142,14 @@ class InitializeInstrumentsSequence(AbstractSequence):
             address = dmm.address
             dmm.handle.open(address=address)
             print('-\tDMM opened.')
+            
+        # DAQ
+        daq = self.parameters.InstrumentSettings.DAQ
+        if daq.enabled:
+            address = daq.address
+            daq.handle.open(address=address)
+            print('-\tDAQ opened.')
+            
         try:  
             # Printer
             printer = self.parameters.InstrumentSettings.Printer
@@ -168,6 +184,28 @@ class WaitTriggerSequence(AbstractSequence):
     
     def main(self):
         print('Waiting for Trigger...')
+        daq = self.parameters.InstrumentSettings.DAQ
+        wait = True
+        
+        while wait:
+            print(daq.handle)
+            response = daq.handle.read_coil(address=1)
+            print('response', response)
+            #response = not response # invert polarity
+            
+            trigger_signal = self.parameters.InstrumentSettings.DAQ.signal
+            
+            if response == trigger_signal:
+                print('Trigger Detected!')
+                break
+            else:
+                print('Waiting for DAQ...')
+        return super().main()
+
+class WaitTimeTriggerSequence(AbstractSequence):
+    
+    def main(self):
+        print('Waiting for Trigger...')
         timer = Timer()
         timer.reset()
         
@@ -181,8 +219,7 @@ class WaitTriggerSequence(AbstractSequence):
             if current_time >= target_time:
                 timeout = True
         print('Trigger Detected!')
-        return super().main()
-        
+        return super().main()    
     
 class SerializeSequence(AbstractSequence):
     
@@ -338,9 +375,19 @@ class CloseInstrumentsSequence(AbstractSequence):
         # DMM
         dmm = self.parameters.InstrumentSettings.DMM
         if dmm.enabled:
-            dmm.handle.close()
-            print(f'-\tDMM Closed')
-        
+            try:
+                dmm.handle.close()
+                print(f'-\tDMM Closed')
+            except:
+                pass
+        # DAQ
+        daq = self.parameters.InstrumentSettings.DAQ
+        if daq.enabled:
+            try:
+                daq.handle.close()
+                print(f'-\tDAQ Closed')
+            except:
+                pass
         #TBD
         
         return super().main()

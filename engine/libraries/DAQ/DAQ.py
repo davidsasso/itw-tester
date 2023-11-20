@@ -63,6 +63,7 @@ class FX3U(DAQ):
                 raise DAQConnectionError('')
             else:
                 print(f"Coil Response: {address}:", result.bits[0])
+                return result.bits[0]
         except:
             raise DAQConnectionError('')
         

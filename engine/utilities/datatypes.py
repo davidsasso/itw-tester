@@ -6,6 +6,7 @@ class StationData:
     def __init__(self):
         self.station_name = str()
         self.cell_id = str()
+        self.mode = str()
 
 class Product:
     def __init__(self):
@@ -192,6 +193,7 @@ class StationSettings(SettingsFile):
         section = 'StationData'
         self.StationData.station_name = self.get_value(section, key='station_name')
         self.StationData.cell_id = self.get_value(section, key='cell_id')
+        self.StationData.mode = self.get_value(section, key='mode')
     
     def read_product(self):
         ''' Method to read Product section. '''
@@ -226,6 +228,14 @@ class Printer:
         self.zpl_absolute_template = str()
         self.zpl_absolute_file = str()
 
+class DAQ:
+   def __init__(self):
+        self.handle = None
+        self.enabled = bool()
+        self.instrument_type = str()
+        self.address = str()
+        self.trigger = bool()
+         
 class InstrumentSettings(SettingsFile):
     ''' Datastructure for instrument_settings.ini'''
     
@@ -233,6 +243,7 @@ class InstrumentSettings(SettingsFile):
         self.filepath = filepath
         self.DMM = DMM()
         self.Printer = Printer()
+        self.DAQ = DAQ()
         
         self.read_all()
     
@@ -240,6 +251,7 @@ class InstrumentSettings(SettingsFile):
         ''' Read all sections. '''
         self.read_dmm()
         self.read_printer()
+        self.read_daq()
 
     def read_dmm(self):
         ''' Method to read DMM instrument section. '''
@@ -259,11 +271,21 @@ class InstrumentSettings(SettingsFile):
         self.Printer.zpl_template = self.get_value(section, key='zpl_template')
         self.Printer.zpl_file = self.get_value(section, key='zpl_file')
     
+    def read_daq(self):
+        ''' Method to read DMM instrument section. '''
+        
+        section = 'DAQ'
+        self.DAQ.enabled = self.get_bool_value(section, key='enabled')
+        self.DAQ.instrument_type = self.get_value(section, key='instrument_type')
+        self.DAQ.address = self.get_value(section, key='address')
+        self.DAQ.signal = self.get_bool_value(section, key='signal')
+    
     def __str__(self):
         print('\n-- instrument_settings --')
         DMM = f'[DMM]\nenabled={self.DMM.enabled}\ninstrument_type={self.DMM.instrument_type}\naddress={self.DMM.address}\n'
         Printer = f'[Printer]\nenabled={self.Printer.enabled}\ninstrument_type={self.Printer.instrument_type}\naddress={self.Printer.address}\nzpl_template={self.Printer.zpl_template}\nzpl_file={self.Printer.zpl_file}\n'
-        return_string = DMM + Printer
+        DAQ = f'[DAQ]\nenabled={self.DAQ.enabled}\ninstrument_type={self.DAQ.instrument_type}\naddress={self.DAQ.address}\n'
+        return_string = DMM + Printer + DAQ
         return return_string
 
 # test_settings.ini configuration file data structures

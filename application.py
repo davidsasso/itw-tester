@@ -16,6 +16,12 @@ from engine.engine import Engine
 from engine.process_model import ITWProcessModel
 from engine.libraries.DMM import exceptions as DMMExceptions
 from engine.libraries.Printer import exceptions as PrinterExceptions
+from engine.libraries.DAQ import exceptions as DAQExceptions
+
+from ui.label_message import Ui_MainWindow as LabelMessageMainWindow
+from label_message_window import SecondaryApplication as LabelMessageSecondaryApplication
+from label_message_window import SecondaryCustomApplication as LabelMessageSecondaryCustomApplication
+
 
 class Application(QtWidgets.QMainWindow):
     """ Main Application parser for Custom Application """
@@ -116,6 +122,18 @@ class CustomApplication():
         self.app.ui.SerialLineEdit.setText('')
         self.show_user_message('Escanea Serial')
     
+    def auto_test(self):
+        print('Test\n')
+    
+        self.show_user_message('Esperando señal')
+        
+        self.engine.pre_uut()
+        self.engine.main()
+        self.engine.post_uut()
+        
+        self.app.ui.SerialLineEdit.setText('')
+        self.show_user_message('Esperando señal...')
+    
     def run(self):
         continue_testing = self.continue_testing
         try:
@@ -126,6 +144,9 @@ class CustomApplication():
             self.stop()
         except PrinterExceptions.PrinterOpenError:
             self.showMessageBox('Advertencia', 'Impresora no detectada, Conectalo y Enciendelo')
+            self.stop()
+        except DAQExceptions.DAQOpenError:
+            self.showMessageBox('Advertencia', 'PLC no detectado, Revisa el puerto COM')
             self.stop()
         except Exception as e:
             print(e)
@@ -140,6 +161,15 @@ class CustomApplication():
         self.app.ui.TestButton.setEnabled(True)
         self.app.ui.StopButton.setEnabled(True)
         self.app.ui.StartButton.setEnabled(False)
+        
+        # AUTO MODE
+        operation_mode = self.StationSettings.StationData.mode
+        print('OPERATION MODE: ', operation_mode)
+        if operation_mode == 'AUTO':
+            self.app.ui.MainMessageLineEdit.setText('PRESIONA ENTER')
+            self.test_trigger_auto()
+            
+        
         
         self.timer = QtCore.QTimer()
         self.timer.timeout.connect(self.test_trigger)
@@ -176,6 +206,34 @@ class CustomApplication():
         else:
             self.engine.post_uut_loop()
     
+    def test_trigger_auto(self):
+        self.reset_indicators_auto()
+        QApplication.processEvents()
+        print('-------------------------------------------------------------------------------------------')
+        continue_testing = self.continue_testing
+        
+        while continue_testing:
+            
+            try:
+                self.reset_indicators_auto()
+                QApplication.processEvents()
+                continue_testing = self.engine.pre_uut()
+                self.app.ui.SerialLineEdit.setText(self.engine.process_model.parameters.current_serial)
+                self.engine.main()
+                self.engine.post_uut()
+                self.update_views()
+                
+            except PrinterExceptions.PrinterOpenError:
+                self.showMessageBox('Advertencia', 'Impresora no detectada, Conectala')
+                self.showMessageBox('Advertencia', 'Intenta hacer la prueba')
+                self.app.ui.SerialLineEdit.setText('')
+                self.show_user_message('CONECTA LAS TERMINALES')
+                self.app.ui.MainMessageLineEdit.setText('ESPERANDO SEÑAL')
+                self.app.ui.MainMessageLineEdit.setStyleSheet('background-color: white;')
+                break
+        
+        self.engine.post_uut_loop()
+    
     def update_views(self):
         general_result = self.engine.process_model.parameters.general_result
         self.app.ui.MainMessageLineEdit.setText(general_result)
@@ -184,15 +242,23 @@ class CustomApplication():
             self.app.ui.MainMessageLineEdit.setStyleSheet('background-color: green;')
             self.app.ui.MainMessageLineEdit.setText('PASA')
             self.app.ui.UserMessageLabel.setText('COLOCA LA ETIQUETA')
+            
+            self.update_results_table(self.engine.process_model.parameters.TestResults)
+            QApplication.processEvents()
+            
+            # Message if Passed
+            label_message_app_root = LabelMessageSecondaryApplication(custom_ui=LabelMessageMainWindow)
+            label_message_secondary_application_window = LabelMessageSecondaryCustomApplication(app_widgets=app_widgets, app=label_message_app_root)
+            
+            #TODO SHOW MESSAGE FOR 4 SECS
         elif general_result == 'FAIL':
             self.app.ui.MainMessageLineEdit.setStyleSheet('background-color: red;')
             self.app.ui.MainMessageLineEdit.setText('FALLA')
             self.app.ui.UserMessageLabel.setText('PRUEBA DE NUEVO')
+            self.update_results_table(self.engine.process_model.parameters.TestResults)
+            QApplication.processEvents()
         else:
             pass
-        
-        
-        self.update_results_table(self.engine.process_model.parameters.TestResults)
     
     def update_results_table(self, test_results_list):
         table = self.app.ui.TestResultsTable
@@ -208,6 +274,19 @@ class CustomApplication():
                 item.setTextAlignment(Qt.AlignCenter)  # Center-align the text
                 table.setItem(row, col, item)
         
+        QApplication.processEvents()
+    
+    def reset_indicators_auto(self):
+        self.app.ui.MainMessageLineEdit.setText('ESPERANDO SEÑAL')
+        self.app.ui.MainMessageLineEdit.setStyleSheet('background-color: yellow;')
+        
+        self.app.ui.UserMessageLabel.setText('Probando...')
+        
+        self.app.ui.SerialLineEdit.setText('')
+        
+        table = self.app.ui.TestResultsTable
+        table.clearContents()
+        table.setRowCount(0)
         QApplication.processEvents()
     
     def reset_indicators(self):

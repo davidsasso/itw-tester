@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="resources">
+    <file>zd411d.jpg</file>
     <file>itw.jfif</file>
     <file>smitech.jfif</file>
   </qresource>
