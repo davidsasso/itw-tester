@@ -66,26 +66,62 @@ class FX3U(DAQ):
                 return result.bits[0]
         except:
             raise DAQConnectionError('')
+
+    def write_coil(self, address: int, value: bool):
+        try:
+            result = self.client.write_coil(address=address, value=value, slave=1)
+
+            # Check if the request was successful
+            if result.isError():
+                print('modbus error')
+                raise DAQConnectionError('')
+            else:
+                print(f"Coil Write Response: {address}: {value}")
+                return True
+        except:
+           raise DAQConnectionError('')
+
         
     def close(self):
         self.client.close()
 
 
 if __name__ == '__main__':
+    # Puerto COM del RS-485
     address = 'COM9'
+    
     plc = FX3U()
     plc.open(address)
     plc.is_connected()
-    plc.read_coil(address=1)
-    time.sleep(1)
-    plc.read_coil(address=1)
-    time.sleep(1)
-    plc.read_coil(address=1)
-    time.sleep(1)
-    plc.read_coil(address=1)
-    time.sleep(1)
-    plc.read_coil(address=1)
-    time.sleep(1)
+
+    # Estado Actual de las Salidas Y0 y Y1
+    value = plc.read_coil(address=0)
+    value = plc.read_coil(address=1)
+
+    # Activa Salida Y0, espera y la apaga
+    plc.write_coil(address=0, value=True)
+    time.sleep(2)
+    plc.write_coil(address=0, value=False)
+    time.sleep(2)
+
+    # Activa Salida Y1, espera y la apaga
+    plc.write_coil(address=1, value=True)
+    time.sleep(2)
+    plc.write_coil(address=1, value=False)
+    time.sleep(2)
+    
+    # Cierra comunication
     plc.close()
+    
+    """ plc.read_coil(address=1)
+    time.sleep(1)
+    plc.read_coil(address=1)
+    time.sleep(1)
+    plc.read_coil(address=1)
+    time.sleep(1)
+    plc.read_coil(address=1)
+    time.sleep(1)
+    plc.read_coil(address=1)
+    time.sleep(1) """
     
     
