@@ -278,6 +278,8 @@ class ResistanceTestSequence(AbstractSequence):
             
             dmm = self.parameters.InstrumentSettings.DMM.handle
             response = dmm.measure_resistance()
+            response = dmm.measure_resistance()
+            response = dmm.measure_resistance()
             measurement = float(response)
             
             time = test_timer.elapsed_time_seconds()

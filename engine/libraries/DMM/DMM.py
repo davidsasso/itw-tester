@@ -63,8 +63,8 @@ class Gdm834x(DMM):
                 self.reference.write(command)
                 value = self.reference.read()
             except:
-                value = None
-                raise ResponseError(f'Command {command} Failed')
+                value = "-1" #None
+                #raise ResponseError(f'Command {command} Failed')
             return value
         return wrapper
     
@@ -131,6 +131,8 @@ class Gdm834x(DMM):
 
     @__execute_command_with_response
     def measure_resistance(self):
+        self.set_auto_range_status(False)
+        self.set_range(range)
         return 'MEAS:RES?'
 
     @__execute_command_with_response
