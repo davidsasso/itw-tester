@@ -23,9 +23,9 @@ from label_message_window import SecondaryApplication as LabelMessageSecondaryAp
 from label_message_window import SecondaryCustomApplication as LabelMessageSecondaryCustomApplication
 
 # FAIL UI
-from ui.fail_message import Ui_MainWindow as FailMessageMainWindow
-from fail_message_window import SecondaryApplication as FailMessageSecondaryApplication
-from fail_message_window import SecondaryCustomApplication as FailMessageSecondaryCustomApplication
+from ui.fail_message import Ui_MainWindow as LabelMessageMainWindow
+from label_message_window import SecondaryApplication as LabelMessageSecondaryApplication
+from label_message_window import SecondaryCustomApplication as LabelMessageSecondaryCustomApplication
 
 
 class Application(QtWidgets.QMainWindow):
@@ -264,8 +264,8 @@ class CustomApplication():
             QApplication.processEvents()
 
             # Message if fAIL
-            fail_message_app_root = FailMessageSecondaryApplication(custom_ui=FailMessageMainWindow)
-            fail_message_secondary_application_window = FailMessageSecondaryCustomApplication(app_widgets=app_widgets, app=fail_message_app_root)
+            #fail_message_app_root = LabelMessageSecondaryApplication(custom_ui=LabelMessageMainWindow)
+            #fail_message_secondary_application_window = LabelMessageSecondaryCustomApplication(app_widgets=app_widgets, app=label_message_app_root)
             
         else:
             pass
