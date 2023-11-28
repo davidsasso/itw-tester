@@ -261,18 +261,54 @@ class CustomApplication():
             pass
     
     def update_results_table(self, test_results_list):
+
+      for i in range(len(test_results_list)):
+        test_result = test_results_list[i]
+        print([test_result.test_name, str(test_result.low_limit),
+            str(test_result.high_limit), str(test_result.measure),
+            test_result.units, test_result.result, str(test_result.time)])
+
+        test=test_result.test_name
+        lowlmt=test_result.low_limit
+        highlmt=test_result.high_limit
+        msr=test_result.measure
+        unts=test_result.units
+        rslt=test_result.result
+        tm=str(test_result.time)
+
+
+        register={"Test Name":test,"Low Limit":lowlmt,"High Limit":highlmt,"Measure":msr,"Unit":unts,"Result":rslt,"Time":tm}
+        
         table = self.app.ui.TestResultsTable
         font = QtGui.QFont("Arial", 10)
         table.setFont(font)
-        table.setRowCount(len(test_results_list))
+
+        row=table.rowCount()
+        table.insertRow(row)
+
+            
+
+        col=0
+        for key, value in register.items():
+            item=QtWidgets.QTableWidgetItem(str(value))
+            table.setItem(row,col,item)
+            col+=1
+
+
+
+
+        #table = self.app.ui.TestResultsTable
+        #font = QtGui.QFont("Arial", 10)
+        #table.setFont(font)
+        #table.setRowCount(len(test_results_list))
         
-        for row, test_result in enumerate(test_results_list):
-            for col, value in enumerate([test_result.test_name, str(test_result.low_limit),
-                                        str(test_result.high_limit), str(test_result.measure),
-                                        test_result.units, test_result.result, str(test_result.time)]):
-                item = QTableWidgetItem(value)
-                item.setTextAlignment(Qt.AlignCenter)  # Center-align the text
-                table.setItem(row, col, item)
+        #for row, test_result in enumerate(test_results_list):
+        #    for col, value in enumerate([test_result.test_name, str(test_result.low_limit),
+        #                                str(test_result.high_limit), str(test_result.measure),
+        #                                test_result.units, test_result.result, str(test_result.time)]):
+        #        item = QTableWidgetItem(value)
+        #        item.setTextAlignment(Qt.AlignCenter)  # Center-align the text
+        #        table.setItem(row, col, item)
         
         QApplication.processEvents()
     
@@ -298,8 +334,8 @@ class CustomApplication():
         self.app.ui.SerialLineEdit.setText('')
         
         table = self.app.ui.TestResultsTable
-        table.clearContents()
-        table.setRowCount(0)
+        #table.clearContents()
+        #table.setRowCount(0)
         QApplication.processEvents()
         
     def showMessageBox(self, title, message):
