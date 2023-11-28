@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>1366</width>
-    <height>735</height>
+    <height>768</height>
    </rect>
   </property>
   <property name="mouseTracking">
@@ -669,13 +669,12 @@ QTableWidget::item:selected {
       <x>780</x>
       <y>160</y>
       <width>561</width>
-      <height>521</height>
+      <height>611</height>
      </rect>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>1</number>
     </property>
-    <widget class="QWidget" name="page_4"/>
     <widget class="QWidget" name="page">
      <widget class="QWidget" name="verticalLayoutWidget">
       <property name="geometry">
@@ -780,130 +779,7 @@ QTableWidget::item:selected {
       </property>
      </widget>
     </widget>
-    <widget class="QWidget" name="page_2">
-     <widget class="QLabel" name="Pass_message_printer">
-      <property name="geometry">
-       <rect>
-        <x>20</x>
-        <y>30</y>
-        <width>501</width>
-        <height>51</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Arial</family>
-        <pointsize>22</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color: rgb(92, 184, 136);</string>
-      </property>
-      <property name="text">
-       <string>Por favor coloca la etiqueta</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignCenter</set>
-      </property>
-     </widget>
-     <widget class="QLabel" name="Pass_message_img">
-      <property name="geometry">
-       <rect>
-        <x>20</x>
-        <y>100</y>
-        <width>501</width>
-        <height>291</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Arial</family>
-        <pointsize>22</pointsize>
-        <weight>50</weight>
-        <bold>false</bold>
-       </font>
-      </property>
-      <property name="styleSheet">
-       <string notr="true"/>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="pixmap">
-       <pixmap resource="../resources/resources.qrc">:/resources/zd411d.jpg</pixmap>
-      </property>
-      <property name="scaledContents">
-       <bool>true</bool>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignCenter</set>
-      </property>
-     </widget>
-    </widget>
-    <widget class="QWidget" name="page_3">
-     <widget class="QLabel" name="Pass_message_printer_2">
-      <property name="geometry">
-       <rect>
-        <x>30</x>
-        <y>30</y>
-        <width>501</width>
-        <height>51</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Arial</family>
-        <pointsize>22</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color: rgb(255, 85, 0);</string>
-      </property>
-      <property name="text">
-       <string>Prueba fallida reintente por favor</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignCenter</set>
-      </property>
-     </widget>
-     <widget class="QLabel" name="Pass_message_img_2">
-      <property name="geometry">
-       <rect>
-        <x>30</x>
-        <y>100</y>
-        <width>501</width>
-        <height>301</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Arial</family>
-        <pointsize>22</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="styleSheet">
-       <string notr="true"/>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="pixmap">
-       <pixmap resource="../resources/resources.qrc">:/resources/Fail_img.PNG</pixmap>
-      </property>
-      <property name="scaledContents">
-       <bool>true</bool>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignCenter</set>
-      </property>
-     </widget>
-    </widget>
+    <widget class="QWidget" name="page_2"/>
    </widget>
    <widget class="QLabel" name="TopLineLabel_3">
     <property name="geometry">
@@ -986,9 +862,9 @@ color: #0b0b0b;</string>
     <property name="font">
      <font>
       <family>Arial</family>
-      <pointsize>26</pointsize>
-      <weight>75</weight>
-      <bold>true</bold>
+      <pointsize>24</pointsize>
+      <weight>50</weight>
+      <bold>false</bold>
      </font>
     </property>
     <property name="styleSheet">
