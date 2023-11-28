@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="resources">
+    <file>Fail_img.PNG</file>
     <file>alert.png</file>
     <file>multimeter.png</file>
     <file>resistance.jpg</file>

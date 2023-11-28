@@ -7,7 +7,6 @@ from PyQt5.QtWidgets import QApplication, QTableWidgetItem, QMessageBox
 import os
 import sys
 import pyvisa
-import time
 
 # Custom Imports
 #from ui.main_window import Ui_MainWindow
@@ -22,6 +21,11 @@ from engine.libraries.DAQ import exceptions as DAQExceptions
 from ui.label_message import Ui_MainWindow as LabelMessageMainWindow
 from label_message_window import SecondaryApplication as LabelMessageSecondaryApplication
 from label_message_window import SecondaryCustomApplication as LabelMessageSecondaryCustomApplication
+
+# FAIL UI
+from ui.fail_message import Ui_MainWindow as FailMessageMainWindow
+from fail_message_window import SecondaryApplication as FailMessageSecondaryApplication
+from fail_message_window import SecondaryCustomApplication as FailMessageSecondaryCustomApplication
 
 
 class Application(QtWidgets.QMainWindow):
@@ -215,7 +219,6 @@ class CustomApplication():
         
         while continue_testing:
             
-            
             try:
                 self.reset_indicators_auto()
                 QApplication.processEvents()
@@ -243,18 +246,14 @@ class CustomApplication():
         if general_result == 'PASS':
             self.app.ui.MainMessageLineEdit.setStyleSheet('background-color: green;')
             self.app.ui.MainMessageLineEdit.setText('PASA')
-            #self.app.ui.UserMessageLabel.setText('COLOCA LA ETIQUETA')
+            self.app.ui.UserMessageLabel.setText('COLOCA LA ETIQUETA')
             
             self.update_results_table(self.engine.process_model.parameters.TestResults)
-
-            self.app.ui.stackedWidget.setCurrentIndex(2) #Show pass message page in GUI
             QApplication.processEvents()
-
-            time.sleep(4) #sleep time to visualice pass message
             
             # Message if Passed
-            #label_message_app_root = LabelMessageSecondaryApplication(custom_ui=LabelMessageMainWindow)
-            #abel_message_secondary_application_window = LabelMessageSecondaryCustomApplication(app_widgets=app_widgets, app=label_message_app_root)
+            label_message_app_root = LabelMessageSecondaryApplication(custom_ui=LabelMessageMainWindow)
+            label_message_secondary_application_window = LabelMessageSecondaryCustomApplication(app_widgets=app_widgets, app=label_message_app_root)
             
             #TODO SHOW MESSAGE FOR 4 SECS
         elif general_result == 'FAIL':
@@ -262,71 +261,32 @@ class CustomApplication():
             self.app.ui.MainMessageLineEdit.setText('FALLA')
             self.app.ui.UserMessageLabel.setText('PRUEBA DE NUEVO')
             self.update_results_table(self.engine.process_model.parameters.TestResults)
-            
-            self.app.ui.stackedWidget.setCurrentIndex(3) #Show fail message page in GUI 
-            
-
             QApplication.processEvents()
 
-            time.sleep(4) #Added sleep time to visualice failure message
+            # Message if fAIL
+            fail_message_app_root = FailMessageSecondaryApplication(custom_ui=FailMessageMainWindow)
+            fail_message_secondary_application_window = FailMessageSecondaryCustomApplication(app_widgets=app_widgets, app=fail_message_app_root)
+            
         else:
             pass
     
     def update_results_table(self, test_results_list):
-
-      for i in range(len(test_results_list)):
-        test_result = test_results_list[i]
-        print([test_result.test_name, str(test_result.low_limit),
-            str(test_result.high_limit), str(test_result.measure),
-            test_result.units, test_result.result, str(test_result.time)])
-
-        test=test_result.test_name
-        lowlmt=test_result.low_limit
-        highlmt=test_result.high_limit
-        msr=test_result.measure
-        unts=test_result.units
-        rslt=test_result.result
-        tm=str(test_result.time)
-
-
-        register={"Test Name":test,"Low Limit":lowlmt,"High Limit":highlmt,"Measure":msr,"Unit":unts,"Result":rslt,"Time":tm}
-        
         table = self.app.ui.TestResultsTable
         font = QtGui.QFont("Arial", 10)
         table.setFont(font)
-
-        row=table.rowCount()
-        table.insertRow(row)
-
-            
-
-        col=0
-        for key, value in register.items():
-            item=QtWidgets.QTableWidgetItem(str(value))
-            table.setItem(row,col,item)
-            col+=1
-
-
-
-
-        #table = self.app.ui.TestResultsTable
-        #font = QtGui.QFont("Arial", 10)
-        #table.setFont(font)
-        #table.setRowCount(len(test_results_list))
+        table.setRowCount(len(test_results_list))
         
-        #for row, test_result in enumerate(test_results_list):
-        #    for col, value in enumerate([test_result.test_name, str(test_result.low_limit),
-        #                                str(test_result.high_limit), str(test_result.measure),
-        #                                test_result.units, test_result.result, str(test_result.time)]):
-        #        item = QTableWidgetItem(value)
-        #        item.setTextAlignment(Qt.AlignCenter)  # Center-align the text
-        #        table.setItem(row, col, item)
+        for row, test_result in enumerate(test_results_list):
+            for col, value in enumerate([test_result.test_name, str(test_result.low_limit),
+                                        str(test_result.high_limit), str(test_result.measure),
+                                        test_result.units, test_result.result, str(test_result.time)]):
+                item = QTableWidgetItem(value)
+                item.setTextAlignment(Qt.AlignCenter)  # Center-align the text
+                table.setItem(row, col, item)
         
         QApplication.processEvents()
     
     def reset_indicators_auto(self):
-        self.app.ui.stackedWidget.setCurrentIndex(0) #reset index 
-        
         self.app.ui.MainMessageLineEdit.setText('ESPERANDO SEÑAL')
         self.app.ui.MainMessageLineEdit.setStyleSheet('background-color: yellow;')
         
@@ -335,13 +295,11 @@ class CustomApplication():
         self.app.ui.SerialLineEdit.setText('')
         
         table = self.app.ui.TestResultsTable
-        #table.clearContents()
-        #table.setRowCount(0)
+        table.clearContents()
+        table.setRowCount(0)
         QApplication.processEvents()
     
     def reset_indicators(self):
-        self.app.ui.stackedWidget.setCurrentIndex(0) #reset index 
-        
         self.app.ui.MainMessageLineEdit.setText('Probando')
         self.app.ui.MainMessageLineEdit.setStyleSheet('background-color: yellow;')
         
@@ -350,8 +308,8 @@ class CustomApplication():
         self.app.ui.SerialLineEdit.setText('')
         
         table = self.app.ui.TestResultsTable
-        #table.clearContents()
-        #table.setRowCount(0)
+        table.clearContents()
+        table.setRowCount(0)
         QApplication.processEvents()
         
     def showMessageBox(self, title, message):
