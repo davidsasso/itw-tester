@@ -101,6 +101,9 @@ class CustomApplication():
         QApplication.processEvents()
         
     def start(self):
+        #TODO Pedir Shop Order
+        #TODO escanear bracket
+        
         print('Started')
         #TODO pass model from settings
         self.Model = ITWProcessModel()
