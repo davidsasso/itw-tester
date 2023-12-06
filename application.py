@@ -298,12 +298,13 @@ class CustomApplication():
         font = QtGui.QFont("Arial", 10)
         table.setFont(font)
 
-        row=table.rowCount()
+        row=0 #Insert register at the tops of the table
+        row_count=table.rowCount()
         table.insertRow(row)
 
-            
 
         col=0
+
         for key, value in register.items():
             item=QtWidgets.QTableWidgetItem(str(value))
             table.setItem(row,col,item)
