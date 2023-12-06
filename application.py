@@ -23,6 +23,8 @@ from ui.label_message import Ui_MainWindow as LabelMessageMainWindow
 from label_message_window import SecondaryApplication as LabelMessageSecondaryApplication
 from label_message_window import SecondaryCustomApplication as LabelMessageSecondaryCustomApplication
 
+from ui.part_number_window import Ui_MainWindow as config_screen
+
 
 class Application(QtWidgets.QMainWindow):
     """ Main Application parser for Custom Application """
@@ -64,7 +66,11 @@ class CustomApplication():
         shortcut.activated.connect(self.test_trigger)
         self.app.ui.actionDevicesList.triggered.connect(self.show_devices_list)
     
+
+
     def initialize(self):
+
+        
         self.read_configuration()
         self.initialize_table()
     
